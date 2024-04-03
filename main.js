@@ -33,7 +33,7 @@ class ProductManager {
         }
     }
 
-    getProduct() {
+    getProduct() {k
         return this.products;
     }
 
@@ -47,6 +47,7 @@ class ProductManager {
 }
 
 const productos = new ProductManager
+
 //Array vacio
 console.log(productos.getProduct())
 
