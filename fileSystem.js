@@ -67,18 +67,22 @@ const productos = new ProductManager();
 // productos.addProduct("titulo2", "Descripcion2", "800", "imagen2", "ba2", 9);
 // productos.addProduct("titulo3", "Descripcion3", "200", "imagen3", "ba3", 6);
 
+//Se crea el archivo .txt con los 3 productos
 // productos.getProducts()
 
+//Buscamos el producto por su ID
 // productos.getProductsById(1)
 
+//Se borra el producto según su ID
 // productos.deleteProducts(2)
 
-productos.updateProducts({
-    title: 'titulo3',
-    description: 'Descripcion3',
-    price: '1000',
-    thumbnail: 'imagen3',
-    code: 'ba3',
-    stock: 6,
-    id: 3
-})
+//Se modifica un producto
+// productos.updateProducts({
+//     title: 'titulo3',
+//     description: 'Descripcion3',
+//     price: '1000',
+//     thumbnail: 'imagen3',
+//     code: 'ba3',
+//     stock: 6,
+//     id: 3
+// })
