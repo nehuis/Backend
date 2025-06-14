@@ -1,0 +1,22 @@
+[
+  {
+    "title": "producto c",
+    "description": "descripcion producto c",
+    "code": "P-c",
+    "price": 600,
+    "status": "true",
+    "stock": 10,
+    "category": "C",
+    "id": 798
+  },
+  {
+    "title": "producto a",
+    "description": "descripcion producto a",
+    "code": "P-a",
+    "price": 200,
+    "status": "true",
+    "stock": 10,
+    "category": "A",
+    "id": 793
+  }
+]
