@@ -28,5 +28,16 @@
     "stock": 10,
     "category": "A",
     "id": 358
+  },
+  {
+    "title": "Notebook Acer",
+    "description": "Notebook Acer Ryzen 7 512GB",
+    "code": "N-A",
+    "price": "1000",
+    "status": "true",
+    "stock": "10",
+    "category": "laptops",
+    "id": 782,
+    "thumbnail": "C:\\Users\\NEHUEL\\Desktop\\Backend\\src\\public\\img\\1749929359691_acer.jpg"
   }
 ]

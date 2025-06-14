@@ -1,5 +1,6 @@
-import { Router } from "express";
+import { response, Router } from "express";
 import { loadProducts, saveProducts } from "../fs/dataManager.js";
+import { uploader } from "../utils.js";
 
 const router = Router();
 
@@ -92,6 +93,44 @@ router.delete("/:productId", (req, res) => {
   res.send({
     status: "Success",
     payload: `Producto ${productId} eliminado`,
+  });
+});
+
+router.post("/thumbnail", uploader.single("file"), (req, res) => {
+  if (!req.file) {
+    return res
+      .status(400)
+      .send({ status: "Error", payload: "No se adjuntó un archivo" });
+  }
+  console.log(req.file);
+
+  const products = loadProducts();
+  const product = req.body;
+
+  product.id = Math.floor(Math.random() * 1000 + 1);
+
+  product.thumbnail = req.file.path;
+
+  if (
+    !product.title ||
+    !product.description ||
+    !product.code ||
+    !product.price ||
+    !product.stock ||
+    !product.category
+  ) {
+    return res.status(400).send({
+      status: "Error",
+      payload: "Los valores ingresados son inválidos",
+    });
+  }
+
+  products.push(product);
+  saveProducts(products);
+
+  res.send({
+    status: "Success",
+    payload: `Producto creado con éxito. Id: ${product.id}`,
   });
 });
 
