@@ -1,7 +1,6 @@
 [
   {
     "products": [
-      {},
       {
         "product": 798,
         "quantity": 1
@@ -11,8 +10,20 @@
   },
   {
     "products": [
-      {}
+      {
+        "product": 358,
+        "quantity": 1
+      }
     ],
     "id": 137
+  },
+  {
+    "products": [
+      {
+        "product": 793,
+        "quantity": 1
+      }
+    ],
+    "id": 274
   }
 ]

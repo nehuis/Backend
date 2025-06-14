@@ -10,6 +10,16 @@
     "id": 798
   },
   {
+    "title": "Producto B",
+    "description": "descripcion producto b",
+    "code": "P-B",
+    "price": 200,
+    "status": "true",
+    "stock": 10,
+    "category": "B",
+    "id": 793
+  },
+  {
     "title": "producto a",
     "description": "descripcion producto a",
     "code": "P-a",
@@ -17,6 +27,6 @@
     "status": "true",
     "stock": 10,
     "category": "A",
-    "id": 793
+    "id": 358
   }
 ]
