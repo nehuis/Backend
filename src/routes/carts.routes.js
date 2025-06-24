@@ -5,20 +5,19 @@ const router = Router();
 
 router.post("/", (req, res) => {
   const carts = loadCart();
-  let cart = req.body;
+  const newId = carts.length ? carts[carts.length - 1].id + 1 : 1;
 
-  cart.id = Math.floor(Math.random() * 1000 + 1);
+  const newCart = {
+    id: newId,
+    products: [],
+  };
 
-  if (!cart.products) {
-    return res.send({ status: "Error", payload: "Valor inválido" });
-  }
-
-  carts.push(cart);
+  carts.push(newCart);
   saveCart(carts);
 
-  res.send({
+  return res.status(201).send({
     status: "Success",
-    payload: `Carrito ${cart.id} creado con éxito`,
+    payload: newCart,
   });
 });
 
@@ -27,49 +26,55 @@ router.post("/:cartId/product/:productId", (req, res) => {
   const products = loadProducts();
   const { cartId, productId } = req.params;
 
-  let cart = carts.find((c) => c.id === parseInt(cartId));
+  const cart = carts.find((c) => c.id === Number(cartId));
   if (!cart) {
     return res
       .status(404)
       .send({ status: "Error", payload: "Carrito no encontrado" });
   }
 
-  let product = products.find((p) => p.id === parseInt(productId));
+  const product = products.find((p) => p.id === Number(productId));
   if (!product) {
     return res
       .status(404)
       .send({ status: "Error", payload: "Producto no encontrado" });
   }
 
-  let existingProduct = cart.products.find(
-    (p) => p.product === parseInt(productId)
-  );
-  if (existingProduct) {
-    existingProduct.quantity += 1;
-  } else {
-    cart.products.push({ product: parseInt(productId), quantity: 1 });
+  const quantity = Number(req.body.quantity) || 1;
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    return res
+      .status(400)
+      .send({ status: "Error", payload: "Cantidad inválida" });
   }
-  saveCart(carts);
 
-  res.send({ status: "Success", payload: cart });
+  const existing = cart.products.find((p) => p.product === product.id);
+  if (existing) {
+    existing.quantity += quantity;
+  } else {
+    cart.products.push({ product: product.id, quantity: quantity });
+  }
+
+  saveCart(carts);
+  return res.send({ status: "Success", payload: cart });
 });
 
 router.get("/", (req, res) => {
   const carts = loadCart();
-  res.send({ status: "Success", payload: carts });
+  return res.send({ status: "Success", payload: carts });
 });
 
 router.get("/:cartId", (req, res) => {
   const carts = loadCart();
-  let { cartId } = req.params;
+  const { cartId } = req.params;
 
-  const cart = carts.find((cart) => cart.id === parseInt(cartId));
+  const cart = carts.find((c) => c.id === Number(cartId));
   if (!cart) {
-    return res.send({ status: "Error", payload: "Carrito no encontrado" });
+    return res
+      .status(404)
+      .send({ status: "Error", payload: "Carrito no encontrado" });
   }
 
-  res.send({ status: "Success", payload: cart });
-  saveCart(carts);
+  return res.send({ status: "Success", payload: cart });
 });
 
 export default router;

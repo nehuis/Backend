@@ -25,9 +25,19 @@
     "products": [
       {
         "product": 793,
-        "quantity": 1
+        "quantity": 3
       }
     ],
     "id": 274
+  },
+  {
+    "id": 275,
+    "products": [
+      {
+        "product": 793,
+        "quantity": 6
+      }
+    ],
+    "createdAt": 1750780202296
   }
 ]
