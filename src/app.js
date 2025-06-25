@@ -16,16 +16,14 @@ const PORT = 8080;
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartRouter);
 
-app.engine("handlebars", handlebars.engine);
+app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views/");
 app.set("view engine", "handlebars");
 
 // app.use("/views", viewRouter);
 
 app.get("/socket", (req, res) => {
-  console.log("Entra a GET /");
   res.render("socket");
-  console.log("Despues de res.render");
 });
 
 const httpServer = app.listen(PORT, () => {
