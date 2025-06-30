@@ -39,5 +39,11 @@
     "category": "laptops",
     "id": 782,
     "thumbnail": "C:\\Users\\NEHUEL\\Desktop\\Backend\\src\\public\\img\\1749929359691_acer.jpg"
+  },
+  {
+    "id": "bcbba423-33a5-4498-8a17-f468b9a64270",
+    "title": "producto d",
+    "description": "desc d",
+    "price": 2000
   }
 ]
