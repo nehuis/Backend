@@ -1,0 +1,427 @@
+{
+	"info": {
+		"_postman_id": "52d81733-78d1-4a63-aea0-a4cb31bb6fab",
+		"name": "Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38647129"
+	},
+	"item": [
+		{
+			"name": "Llamar productos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear producto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Nikon D7500 + 18-140mm ED VR DSLR color negro\",\r\n    \"description\": \"La Nikon D7500 DSLR en color negro es la cámara perfecta para capturar tus momentos más preciados con una calidad de imagen excepcional.\",\r\n    \"code\": \"cam-nikon\",\r\n    \"price\": 1450,\r\n    \"status\": \"true\",\r\n    \"stock\": 10, \r\n    \"category\": \"camaras\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar producto",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Canon EOS Rebel T7 DSLR color negro\",\r\n    \"description\": \"La cámara EOS Rebel T7 combina características fantásticas con una operación sencilla para obtener imágenes de alta calidad.\",\r\n    \"code\": \"cam-canon\",\r\n    \"price\": 1350,\r\n    \"status\": \"true\",\r\n    \"stock\": 10, \r\n    \"category\": \"camaras\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products/68813f8c39df5b5a265173ff",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"68813f8c39df5b5a265173ff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Llamar producto por ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"producto b\",\r\n    \"description\": \"descripcion producto b\",\r\n    \"code\": \"P-B\",\r\n    \"price\": 100,\r\n    \"status\": \"true\",\r\n    \"stock\": 10, \r\n    \"category\": \"B\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products/68793c772c0283db20c8c055",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"68793c772c0283db20c8c055"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar producto por ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/products/6876c7952116492bba285104",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"6876c7952116492bba285104"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Llamar carts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Llamar cart por id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [{\r\n        \"title\": \"producto a\",\r\n        \"description\": \"descripcion producto a\",\r\n        \"quantity\": 20\r\n    }]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/68793b742c0283db20c8c04d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"68793b742c0283db20c8c04d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar productos a carritos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/68793b742c0283db20c8c04d/product/68793c232c0283db20c8c053",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"68793b742c0283db20c8c04d",
+						"product",
+						"68793c232c0283db20c8c053"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear producto con imagen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Notebook Acer",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Notebook Acer Ryzen 7 512GB",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "acer-ryzen",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "1100",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "stock",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "laptops",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/NEHUEL/Downloads/acer.webp"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products/thumbnail",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"thumbnail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar productos en carrito específico",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"product\": \"6876b7d48f86fe277f800983\",\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6877dcdc815cd552cb35002c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6877dcdc815cd552cb35002c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar producto específico",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\": 4 \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6877dcdc815cd552cb35002c/products/6876ccacf4b3ea54d4cac0de",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6877dcdc815cd552cb35002c",
+						"products",
+						"6876ccacf4b3ea54d4cac0de"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar todos los productos del cart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [{}]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6877dcdc815cd552cb35002c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6877dcdc815cd552cb35002c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar producto de carrito específico",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [{}]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/68793b742c0283db20c8c04d/products/68793c232c0283db20c8c053",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"68793b742c0283db20c8c04d",
+						"products",
+						"68793c232c0283db20c8c053"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
