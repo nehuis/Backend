@@ -81,6 +81,35 @@ router.get("/:cartId", async (req, res) => {
       .lean();
 
     if (!cart) {
+      return res.status(404).send({
+        status: "Error",
+        payload: "Carrito no encontrado",
+      });
+    }
+
+    res.send({
+      status: "Success",
+      payload: cart,
+    });
+  } catch (error) {
+    console.error("Error al obtener el carrito con productos:", error);
+    res.status(500).send({
+      status: "Error",
+      payload: "Error interno del servidor",
+    });
+  }
+});
+
+router.get("/view/:cartId", async (req, res) => {
+  try {
+    const { cartId } = req.params;
+
+    const cart = await cartModel
+      .findById(cartId)
+      .populate("products.product")
+      .lean();
+
+    if (!cart) {
       return res
         .status(404)
         .send({ status: "Error", payload: "Carrito no encontrado" });
