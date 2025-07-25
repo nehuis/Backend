@@ -75,7 +75,10 @@ router.get("/:cartId", async (req, res) => {
   try {
     const { cartId } = req.params;
 
-    const cart = await cartModel.findById(cartId).populate("products.product");
+    const cart = await cartModel
+      .findById(cartId)
+      .populate("products.product")
+      .lean();
 
     if (!cart) {
       return res
@@ -83,10 +86,7 @@ router.get("/:cartId", async (req, res) => {
         .send({ status: "Error", payload: "Carrito no encontrado" });
     }
 
-    res.send({
-      status: "Success",
-      payload: cart,
-    });
+    res.render("cartDetail", { cart });
   } catch (error) {
     console.error("Error al obtener el carrito con productos:", error);
     res
