@@ -1,0 +1,15 @@
+<body data-cartid="{{cartId}}">
+  <h2>{{product.title}}</h2>
+  <img src="{{product.thumbnail}}" alt="{{product.title}}" width="200" />
+  <p>Ruta de imagen: {{product.thumbnail}}</p>
+  <p>Descripción: {{product.description}}</p>
+  <p>Precio: ${{product.price}}</p>
+  <p>Stock: {{product.stock}}</p>
+  <p>Categoría: {{product.category}}</p>
+
+  <label for="qty">Cantidad:</label>
+  <input id="qty" type="number" value="1" min="1" />
+  <button onclick="agregarAlCarrito('{{product._id}}')">Agregar al carrito</button>
+
+  <script src="/js/index.js"></script>
+</body>

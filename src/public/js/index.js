@@ -1,37 +1,38 @@
-const socket = io();
-const form = document.getElementById("prodForm");
-const list = document.getElementById("productsList");
+const cartId = document.body.dataset.cartid;
 
-function showProducts(products) {
-  if (products.length === 0) {
-    list.innerHTML = '<p class="empty">No hay productos</p>';
-    return;
-  }
-  list.innerHTML = products
-    .map(
-      (p) => `
-        <li class="product-card">
-          <button class="delete-btn" data-id="${p.id}">✕</button>
-          <h5>${p.title}</h5>
-          <p>${p.description}</p>
-          <span class="price">$${p.price}</span>
-        </li>`
-    )
-    .join("");
+function agregarAlCarrito(productId) {
+  const quantity = Number(document.getElementById("qty").value) || 1;
+
+  fetch(`/api/carts/${cartId}/products/${productId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ quantity }),
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Error al agregar al carrito");
+      return res.json();
+    })
+    .then(() => {
+      Toastify({
+        text: "Producto agregado al carrito",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#4caf50",
+        stopOnFocus: true,
+      }).showToast();
+    })
+    .catch((err) => {
+      console.error("Error al agregar al carrito:", err);
+      Toastify({
+        text: "Error al agregar el producto",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#f44336",
+        stopOnFocus: true,
+      }).showToast();
+    });
 }
-
-socket.on("updateProducts", showProducts);
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(form));
-  data.price = Number(data.price);
-  socket.emit("newProduct", data);
-  form.reset();
-});
-
-list.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    socket.emit("deleteProduct", e.target.dataset.id);
-  }
-});

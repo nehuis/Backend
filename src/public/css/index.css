@@ -1,6 +1,5 @@
-/* ▸ Paleta y “reset” ↓ */
 :root {
-  --c-primary: #0069d9;
+  --c-primary: #4400ff;
   --c-bg: #f2f4f7;
   --c-card: #ffffff;
   --c-border: #e0e0e0;
@@ -18,85 +17,18 @@ body {
   color: var(--c-text);
 }
 
-.titulo {
-  text-align: center;
-  margin: 2rem 0 1.5rem;
-}
-
 .grid-wrapper {
   display: grid;
   grid-template-columns: minmax(280px, 340px) 1fr;
   gap: 2rem;
   padding: 0 1.5rem 2.5rem;
 }
-
 @media (max-width: 768px) {
   .grid-wrapper {
     grid-template-columns: 1fr;
   }
 }
 
-.card {
-  background: var(--c-card);
-  border: 1px solid var(--c-border);
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem 1.75rem;
-}
-
-.form-card h2 {
-  margin: 0 0 1.25rem;
-  font-size: 1.25rem;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.9rem;
-}
-label {
-  margin-bottom: 0.35rem;
-  font-weight: 600;
-}
-input,
-textarea {
-  padding: 0.6rem 0.75rem;
-  font-size: 0.95rem;
-  border: 1px solid var(--c-border);
-  border-radius: 8px;
-  background: #fff;
-}
-input:focus,
-textarea:focus {
-  outline: 2px solid var(--c-primary);
-  border-color: var(--c-primary);
-}
-
-button {
-  background: var(--c-primary);
-  color: #fff;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-button:hover {
-  background: #0054b2;
-}
-button:active {
-  transform: translateY(1px);
-}
-
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 1.6rem;
-}
-
-.cards-container li {
-  list-style: none;
-}
 .product-card {
   background: var(--c-card);
   border: 1px solid var(--c-border);
@@ -112,7 +44,6 @@ button:active {
 .product-card:hover {
   transform: translateY(-4px);
 }
-
 .product-card h5 {
   margin: 0;
   font-size: 1.1rem;
@@ -126,22 +57,57 @@ button:active {
 .product-card .price {
   font-weight: 600;
   font-size: 1rem;
-  color: var(--c-primary);
+  color: var(--c-text);
 }
 
-.delete-btn {
-  position: absolute;
-  top: 0.55rem;
-  right: 0.55rem;
-  background: transparent;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  line-height: 1;
-  color: black;
+.product-card .details-link {
+  margin-top: auto;
+  text-decoration: none;
+  color: var(--c-primary);
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
-.delete-btn:hover {
-  color: red;
-  background: transparent;
+.product-card .details-link:hover {
+  color: #ff487f;
+}
+
+.pagination {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+.pagination-link {
+  text-decoration: none;
+  color: var(--c-primary);
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+.pagination-link:hover {
+  color: #0054b2;
+}
+.pagination-current {
+  font-weight: bold;
+  color: #444;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+button {
+  background-color: var(--c-primary);
+  border-radius: 10px;
+  border-style: none;
+  color: wheat;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #ff487f;
 }
