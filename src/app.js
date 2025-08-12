@@ -12,6 +12,10 @@ import {
   loadProducts,
   saveProducts,
 } from "./services/product.services.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import userViewRouter from "./routes/users.views.router.js";
+import sessionsRouter from "./routes/sessions.router.js";
 
 const app = express();
 app.use(express.json());
@@ -22,6 +26,22 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.static(path.join(__dirname, "public")));
 
+const PathDB =
+  "mongodb+srv://nehuis:YUPgt5ySEjlU8jqd@cluster0.xguy6qd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: PathDB,
+      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+      ttl: 15,
+    }),
+    secret: "nehu1ss3cret",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartRouter);
 
@@ -30,6 +50,9 @@ app.set("views", __dirname + "/views/");
 app.set("view engine", "handlebars");
 
 app.use("/", viewRouter);
+
+app.use("/views/users", userViewRouter);
+app.use("/api/sessions", sessionsRouter);
 
 const httpServer = app.listen(PORT, () => {
   console.log(`Running on port: ${PORT}`);
@@ -55,9 +78,6 @@ socketServer.on("connection", async (socket) => {
     socketServer.emit("updateProducts", products);
   });
 });
-
-const PathDB =
-  "mongodb+srv://nehuis:YUPgt5ySEjlU8jqd@cluster0.xguy6qd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const connectMongoDB = async () => {
   try {

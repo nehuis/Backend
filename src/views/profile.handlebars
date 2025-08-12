@@ -1,0 +1,18 @@
+<div>
+  {{#if user}}
+    <h1>Perfil de Usuario</h1>
+
+    <div class="profile-card">
+      <p><strong>Nombre:</strong> {{user.name}}</p>
+      <p><strong>Email:</strong> {{user.email}}</p>
+      <p><strong>Fecha de registro:</strong> {{user.createdAt}}</p>
+    </div>
+
+    <form action="/logout" method="POST">
+      <button type="submit">Cerrar Sesión</button>
+    </form>
+  {{else}}
+    <h1>Inicia sesión para ver tu perfil</h1>
+    <a href="/views/users/login">Ingresá</a>
+  {{/if}}
+</div>

@@ -1,7 +1,10 @@
 import express from "express";
 import { productModel } from "../models/product.model.js";
+import cookieParser from "cookie-parser";
 
 const router = express.Router();
+
+router.use(cookieParser("nehuis"));
 
 router.get("/products", async (req, res) => {
   try {
@@ -64,6 +67,41 @@ router.get("/products/:pid", async (req, res) => {
 
 router.get("/realTimeProducts", (req, res) => {
   res.render("realTimeProducts");
+});
+
+router.get("/setCookies", (req, res) => {
+  res
+    .cookie("nehuisCookie", "cookie con firma", {
+      max_age: 10000,
+      signed: true,
+    })
+    .send("Cookie asignada con firma");
+});
+
+router.get("/setCookies2", (req, res) => {
+  res
+    .cookie("nehuisCookie2", "otra cookie sin firma", { max_age: 10000 })
+    .send("Cookie asignada sin firma");
+});
+
+router.get("/getCookies", (req, res) => {
+  res.send(req.cookies);
+  // res.send(req.cookies.nehuisCookie1);
+  // res.send(req.signedCookies);
+});
+
+router.get("/deleteCookie", (req, res) => {
+  res.clearCookie("nehuisCookie2").send("Cookie eliminada");
+});
+
+router.get("/session", (req, res) => {
+  if (req.session.counter) {
+    req.session.counter++;
+    res.send(`Se ha visitado el sitio: '${req.session.counter}' veces`);
+  } else {
+    req.session.counter = 1;
+    res.send("Bienvenido!!..");
+  }
 });
 
 export default router;
