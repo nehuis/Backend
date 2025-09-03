@@ -86,8 +86,6 @@ router.get("/setCookies2", (req, res) => {
 
 router.get("/getCookies", (req, res) => {
   res.send(req.cookies);
-  // res.send(req.cookies.nehuisCookie1);
-  // res.send(req.signedCookies);
 });
 
 router.get("/deleteCookie", (req, res) => {

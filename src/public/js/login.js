@@ -4,11 +4,9 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
   const obj = {};
-  data.forEach((value, key) => (obj[key] = value));
 
-  console.log("DataObj: ", obj);
+  data.forEach((value, key) => (obj[key] = value));
 
   fetch("/api/sessions/login", {
     method: "POST",
@@ -16,9 +14,15 @@ form.addEventListener("submit", (e) => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((result) => {
-    if (result.status === 200) {
-      window.location.replace("/views/users");
-    }
-  });
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.status === "Success") {
+        localStorage.setItem("access_token", data.access_token);
+
+        window.location.replace("/views/users");
+      } else {
+        console.error("Error en login:", data);
+      }
+    });
 });
