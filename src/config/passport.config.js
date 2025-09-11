@@ -36,30 +36,32 @@ const initializePassport = () => {
       {
         clientID: "Iv23liuqggsN2X6E50J4",
         clientSecret: "8da2ebffa1e6569db3060e2905f12fea7c399cda",
-        callbackUrl: "http://localhost:8080/api/sessions/githubcallback",
+        callbackURL: "http://localhost:8080/api/sessions/githubcallback",
         scope: ["user:email"],
       },
-
-      async (accessToken, refreshToken, profile, done) => {
-        console.log("Perfil de github");
-        console.log(profile);
+      async (_accessToken, _refreshToken, profile, done) => {
         try {
-          const user = await userModel.findOne({ email: profile._json.email });
-          if (!user) {
-            console.log("Se da de alta");
-            const newUser = {
-              first_name: profile._json.first_name,
-              last_name: profile._json.last_name,
-              email: profile._json.email,
-            };
+          const email = profile._json?.email || profile.emails?.[0]?.value;
+          const fullName =
+            profile._json?.name || profile.displayName || profile.username;
 
-            const result = await userModel.create(newUser);
-            return done(null, result);
+          const [first_name, ...rest] = fullName.split(" ");
+          const last_name = rest.join(" ") || "";
+
+          let user = await userModel.findOne({ email });
+          if (!user) {
+            user = await userModel.create({
+              first_name,
+              last_name,
+              email,
+              role: "user",
+              password: "",
+            });
           }
 
           return done(null, user);
-        } catch (error) {
-          return done(error);
+        } catch (err) {
+          return done(err);
         }
       }
     )

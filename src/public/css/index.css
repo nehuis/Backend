@@ -1,9 +1,10 @@
 :root {
   --c-primary: #4400ff;
   --c-bg: #f2f4f7;
-  --c-card: #ffffff;
+  --c-card: #160e30;
   --c-border: #e0e0e0;
-  --c-text: #333333;
+  --c-background: #8a8a8a;
+  --c-text: #ffffff;
 }
 *,
 *::before,
@@ -15,6 +16,7 @@ body {
   font-family: Arial, sans-serif;
   background: var(--c-bg);
   color: var(--c-text);
+  background-color: var(--c-background);
 }
 
 .grid-wrapper {
@@ -110,4 +112,211 @@ button {
 }
 button:hover {
   background-color: #ff487f;
+}
+
+.form {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form h1 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--c-primary);
+}
+
+.form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form label {
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"] {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form input:focus {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 2px rgba(68, 0, 255, 0.2);
+  outline: none;
+}
+
+.form input[type="submit"] {
+  background-color: var(--c-primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.7rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.form input[type="submit"]:hover {
+  background-color: #ff487f;
+}
+
+.form + p {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.form + p a {
+  color: var(--c-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form + p a:hover {
+  color: #ff487f;
+}
+
+.form {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form h1 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--c-primary);
+}
+
+.form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form input[type="email"],
+.form input[type="password"] {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form input:focus {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 2px rgba(68, 0, 255, 0.2);
+  outline: none;
+}
+
+.form button {
+  background-color: var(--c-primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.7rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.form button:hover {
+  background-color: #ff487f;
+}
+
+.form + p {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.form + p a {
+  color: var(--c-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form + p a:hover {
+  color: #ff487f;
+}
+
+p {
+  text-align: center;
+  margin-top: 0.8rem;
+}
+
+/* ===== LOGIN CON GITHUB ===== */
+.github-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.github-card h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--c-text);
+}
+
+/* Botón estilo GitHub */
+.github-card button {
+  background-color: #24292f; /* color GitHub */
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, transform 0.1s;
+}
+
+.github-card button:hover {
+  background-color: #444c56;
+  transform: translateY(-2px);
+}
+
+/* Links debajo */
+.github-card p {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.github-card a {
+  color: var(--c-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.github-card a:hover {
+  color: #ff487f;
 }

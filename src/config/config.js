@@ -16,4 +16,5 @@ export default {
   mongo_url: process.env.MONGO_URL,
   admin_name: process.env.ADMIN_NAME,
   admin_password: process.env.ADMIN_PASSWORD,
+  secret: process.env.SECRET,
 };
