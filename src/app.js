@@ -69,7 +69,7 @@ app.use("/api/carts", cartRouter);
 app.use("/api/users", userRouter);
 app.use("/api/sessions", sessionRouter);
 
-// Vistas (si las usás todavía)
+// Vistas
 app.use("/", viewRouter);
 app.use("/views/users", userViewRouter);
 app.use("/api/github", gitHubViews);
