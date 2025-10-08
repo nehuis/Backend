@@ -8,7 +8,7 @@ import passport from "passport";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
-import cookieParser from "cookie-pargser";
+import cookieParser from "cookie-parser";
 
 import __dirname from "./utils.js";
 import initializePassport from "./config/passport.config.js";

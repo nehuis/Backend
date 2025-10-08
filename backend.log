@@ -155,3 +155,4 @@ http: 8/10/2025 04:48:06 - GET en /.well-known/appspecific/com.chrome.devtools.j
 http: 8/10/2025 04:48:08 - GET en /.well-known/appspecific/com.chrome.devtools.json
 info: Logger Mode: dev
 http: 8/10/2025 06:27:26 - GET en /favicon.ico
+info: Logger Mode: dev
