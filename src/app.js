@@ -23,7 +23,6 @@ import emailRouter from "./routes/email.router.js";
 import smsRouter from "./routes/sms.router.js";
 
 // Routers de vistas
-import viewRouter from "./routes/views.router.js";
 import userViewRouter from "./routes/users.views.router.js";
 import cartsViewsRouter from "./routes/carts.views.router.js";
 import gitHubViews from "./routes/github.views.js";
@@ -84,7 +83,6 @@ app.use("/api/email", emailRouter);
 app.use("/api/sms", smsRouter);
 
 // Vistas
-app.use("/", viewRouter);
 app.use("/views/users", userViewRouter);
 app.use("/views/carts", cartsViewsRouter);
 app.use("/api/github", gitHubViews);
