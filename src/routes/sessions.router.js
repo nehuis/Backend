@@ -1,27 +1,45 @@
 import { Router } from "express";
+import passport from "passport";
 import {
-  githubAuth,
-  githubCallback,
   register,
   login,
+  githubCallback,
+  current,
+  logout,
 } from "../controllers/session.controller.js";
 
 const router = Router();
 
-// GitHub OAuth
-router.get("/github", githubAuth);
-router.get("/githubcallback", githubCallback);
+router.post(
+  "/register",
+  passport.authenticate("register", {
+    failureRedirect: "/views/users",
+  }),
+  register
+);
 
-// Registro
-router.post("/register", register);
-router.get("/fail-register", (req, res) => {
-  res.send({ status: "Error", message: "Error al crear el usuario" });
-});
+router.post(
+  "/login",
+  passport.authenticate("login", { failureRedirect: "/views/users" }),
+  login
+);
 
-// Login
-router.post("/login", login);
-router.get("/fail-login", (req, res) => {
-  res.send({ status: "Error", message: "Login failed" });
-});
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+router.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/views/users/login" }),
+  githubCallback
+);
+
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  current
+);
+router.post("/logout", logout);
 
 export default router;

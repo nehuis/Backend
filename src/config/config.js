@@ -1,20 +1,22 @@
 import dotenv from "dotenv";
-import program from "../process.js";
+import { Command } from "commander";
 
-const enviroment = program.opts().m;
-console.log("enviroment:", enviroment);
+const program = new Command();
 
-dotenv.config({
-  path:
-    enviroment === "dev"
-      ? "./src/config/.env.development"
-      : "./src/config/.env.production",
-});
+program
+  .option("-m, --Mode <mode>", "Mode to run the application", "dev")
+  .option("-p, --PORT <port>", "Port to run the application", 8080)
+  .option("-d, --DEBUG <debug>", "Debug mode", false)
+  .option("-P, --persist <persist>", "Persistence method", "mongodb");
+program.parse();
+
+console.log("program.opts(): ", program.opts());
+
+const enviroment = program.opts().Mode;
+console.log("enviroment: ", enviroment);
+
+dotenv.config({ quiet: true });
 
 export default {
-  port: process.env.PORT,
-  mongo_url: process.env.MONGO_URL,
-  admin_name: process.env.ADMIN_NAME,
-  admin_password: process.env.ADMIN_PASSWORD,
-  secret: process.env.SECRET,
+  persistence: program.opts().persist,
 };

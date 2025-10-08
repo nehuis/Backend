@@ -1,135 +1,133 @@
 import CartService from "../services/cart.service.js";
+import TicketService from "../services/ticket.service.js";
+
 const cartService = new CartService();
+const ticketService = new TicketService();
 
-export const createCart = async (req, res) => {
-  try {
-    const cart = await cartService.createCart();
-    res.send({ status: "Success", payload: `Carrito creado ID: ${cart.id}` });
-  } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
-  }
-};
-
-export const getCarts = async (req, res) => {
+export const getAllCarts = async (req, res) => {
   try {
     const carts = await cartService.getAllCarts();
-    res.send({ status: "Success", payload: carts });
+    res.json({ status: "success", carts });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send("Error al obtener carritos");
   }
 };
 
-export const getCartById = async (req, res) => {
+export const getCart = async (req, res) => {
   try {
     const cart = await cartService.getCartById(req.params.cartId);
     if (!cart)
       return res
         .status(404)
-        .send({ status: "Error", payload: "Carrito no encontrado" });
-    res.send({ status: "Success", payload: cart });
+        .json({ status: "error", message: "Carrito no encontrado" });
+    res.json({ status: "success", cart });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .json({ status: "error", message: "Error al obtener carrito" });
   }
 };
 
-export const addProduct = async (req, res) => {
+export const createCart = async (req, res) => {
   try {
-    const { cartId, productId } = req.params;
-    const quantity = Number(req.body.quantity) || 1;
-    const result = await cartService.addProductToCart(
-      cartId,
-      productId,
-      quantity
-    );
-
-    if (!result)
-      return res
-        .status(404)
-        .send({ status: "Error", payload: "Carrito no encontrado" });
-    if (result === "PRODUCT_NOT_FOUND")
-      return res
-        .status(404)
-        .send({ status: "Error", payload: "Producto no encontrado" });
-
-    res.send({ status: "Success", payload: result });
+    const cart = await cartService.createCart({
+      user: req.user._id,
+      products: [],
+    });
+    res.status(201).json({ status: "success", cart });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
-  }
-};
-
-export const removeProduct = async (req, res) => {
-  try {
-    const result = await cartService.removeProductFromCart(
-      req.params.cartId,
-      req.params.productId
-    );
-
-    if (!result)
-      return res
-        .status(404)
-        .send({ status: "Error", payload: "Carrito no encontrado" });
-    if (result === "PRODUCT_NOT_IN_CART")
-      return res.send({
-        status: "Error",
-        payload: "Producto no encontrado en el carrito",
-      });
-
-    res.send({ status: "Success", payload: result });
-  } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send("Error al crear carrito");
   }
 };
 
 export const updateCart = async (req, res) => {
   try {
-    const result = await cartService.updateCart(
-      req.params.cartId,
-      req.body.products
-    );
-    if (!result)
-      return res
-        .status(404)
-        .send({ status: "Error", payload: "Carrito no encontrado" });
-    res.send({ status: "Success", payload: result });
+    const { cid } = req.params;
+    const updated = await cartService.updateCart(cid, req.body);
+    if (!updated) return res.status(404).send("Carrito no encontrado");
+    res.json({ status: "success", cart: updated });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send("Error al actualizar carrito");
   }
 };
 
-export const updateProductQuantity = async (req, res) => {
+export const deleteCart = async (req, res) => {
   try {
-    const { cartId, productId } = req.params;
-    const { quantity } = req.body;
-    const result = await cartService.updateProductQuantity(
-      cartId,
-      productId,
-      quantity
-    );
-
-    if (!result)
-      return res
-        .status(404)
-        .send({ status: "Error", payload: "Carrito no encontrado" });
-    if (result === "PRODUCT_NOT_FOUND")
-      return res
-        .status(404)
-        .send({ status: "Error", payload: "Producto no encontrado" });
-
-    res.send({ status: "Success", payload: result });
+    const { cid } = req.params;
+    const deleted = await cartService.deleteCart(cid);
+    if (!deleted) return res.status(404).send("Carrito no encontrado");
+    res.json({ status: "success", message: "Carrito eliminado" });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send("Error al eliminar carrito");
   }
 };
 
-export const clearCart = async (req, res) => {
+export const addProductToCart = async (req, res) => {
+  let { cid, pid } = req.params;
+  const quantity = req.body.quantity || 1;
+
   try {
-    const result = await cartService.clearCart(req.params.cartId);
-    if (!result)
-      return res
-        .status(404)
-        .send({ status: "Error", payload: "Carrito no encontrado" });
-    res.send({ status: "Success", payload: result });
+    if (!cid || cid === "null" || cid === "undefined") {
+      const newCart = await cartService.createCart();
+      cid = newCart._id.toString();
+    }
+
+    const updatedCart = await cartService.addProduct(cid, pid, quantity);
+
+    res.json({
+      status: "success",
+      cartId: cid,
+      cart: updatedCart,
+    });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error("Error al agregar producto al carrito:", error);
+
+    if (error.message && error.message.includes("stock")) {
+      return res.status(400).json({ status: "error", message: error.message });
+    }
+
+    res.status(500).json({
+      status: "error",
+      message: "Error interno al agregar al carrito",
+    });
+  }
+};
+
+export const removeProductFromCart = async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const updated = await cartService.removeProduct(cid, pid);
+    if (!updated)
+      return res.status(404).send("Carrito o producto no encontrado");
+    res.json({ status: "success", cart: updated });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error al eliminar producto del carrito");
+  }
+};
+
+export const purchaseCart = async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const result = await cartService.purchaseCart(
+      cid,
+      ticketService,
+      req.user.email
+    );
+    if (!result)
+      return res.status(404).json({ error: "Carrito no encontrado" });
+    res.json({
+      status: "success",
+      ticket: result.ticket,
+      productsNotProcessed: result.productsNotProcessed,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al procesar la compra" });
   }
 };

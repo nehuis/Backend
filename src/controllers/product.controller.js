@@ -1,76 +1,99 @@
 import ProductService from "../services/product.service.js";
+
 const productService = new ProductService();
 
 export const getProducts = async (req, res) => {
   try {
     const { page = 1, limit = 10, sort, query } = req.query;
-    const filter = {};
-    if (query) {
-      if (query === "true" || query === "false")
-        filter.status = query === "true";
-      else filter.category = { $regex: query, $options: "i" };
-    }
-    const sortOption =
-      sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : {};
-    const result = await productService.getProducts(filter, {
+    const result = await productService.getPaginatedProducts({
       page,
       limit,
-      sort: sortOption,
-      lean: true,
+      sort,
+      query,
     });
-    res.send({ status: "Success", payload: result });
+
+    res.json({
+      status: "success",
+      payload: result.docs,
+      pagination: {
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevPage: result.prevPage,
+        nextPage: result.nextPage,
+        currentPage: result.page,
+      },
+    });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .json({ status: "error", message: "Error al obtener productos" });
   }
 };
 
-export const getProductById = async (req, res) => {
+export const getProductDetail = async (req, res) => {
   try {
-    const product = await productService.getProductById(req.params.productId);
+    const product = await productService.getProductById(req.params.pid);
     if (!product)
       return res
         .status(404)
-        .send({ status: "Error", payload: "Producto no encontrado" });
-    res.send({ status: "Success", payload: product });
+        .json({ status: "error", message: "Producto no encontrado" });
+
+    res.json({ status: "success", payload: product });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).json({
+      status: "error",
+      message: "Error al obtener detalle de producto",
+    });
   }
 };
 
 export const createProduct = async (req, res) => {
   try {
     const product = await productService.createProduct(req.body);
-    res.send({ status: "Success", payload: product });
+    res.status(201).json({ status: "success", payload: product });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .json({ status: "error", message: "Error al crear producto" });
   }
 };
 
 export const updateProduct = async (req, res) => {
   try {
-    const product = await productService.updateProduct(
-      req.params.productId,
+    const updated = await productService.updateProduct(
+      req.params.pid,
       req.body
     );
-    if (!product)
+    if (!updated)
       return res
         .status(404)
-        .send({ status: "Error", payload: "Producto no encontrado" });
-    res.send({ status: "Success", payload: product });
+        .json({ status: "error", message: "Producto no encontrado" });
+
+    res.json({ status: "success", payload: updated });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .json({ status: "error", message: "Error al actualizar producto" });
   }
 };
 
 export const deleteProduct = async (req, res) => {
   try {
-    const product = await productService.deleteProduct(req.params.productId);
-    if (!product)
+    const deleted = await productService.deleteProduct(req.params.pid);
+    if (!deleted)
       return res
         .status(404)
-        .send({ status: "Error", payload: "Producto no encontrado" });
-    res.send({ status: "Success", payload: product });
+        .json({ status: "error", message: "Producto no encontrado" });
+
+    res.json({ status: "success", message: "Producto eliminado" });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .json({ status: "error", message: "Error al eliminar producto" });
   }
 };

@@ -16,9 +16,19 @@ form.addEventListener("submit", (e) => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((result) => {
-    if (result.status === 200) {
-      window.location.replace("/views/users/login");
-    }
-  });
+    credentials: "include",
+  })
+    .then(async (result) => {
+      if (result.ok) {
+        const data = await result.json();
+        console.log("Registrado:", data);
+
+        window.location.replace("/views/users");
+      } else {
+        const error = await result.json();
+        console.error("Error en registro:", error);
+        alert(error.error || "Error al registrarse");
+      }
+    })
+    .catch((err) => console.error("Fetch error:", err));
 });

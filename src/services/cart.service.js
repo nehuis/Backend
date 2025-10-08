@@ -1,78 +1,128 @@
-import { cartModel } from "../models/cart.model.js";
-import { productModel } from "../models/product.model.js";
+import CartsDAO from "../dao/carts.dao.js";
+import ProductsDAO from "../dao/products.dao.js";
+import CartDTO from "../dto/cart.dto.js";
+import { sendTicketEmail } from "../controllers/email.controller.js";
 
 export default class CartService {
-  async createCart() {
-    return await cartModel.create({ products: [] });
+  constructor() {
+    this.dao = new CartsDAO();
+    this.productsDao = new ProductsDAO();
   }
 
   async getAllCarts() {
-    return await cartModel.find();
+    const carts = await this.dao.getAll();
+    return carts.map((cart) => new CartDTO(cart));
   }
 
-  async getCartById(cartId) {
-    return await cartModel.findById(cartId).populate("products.product").lean();
+  async getCartById(id) {
+    const cart = await this.dao.getById(id);
+    return cart ? new CartDTO(cart) : null;
   }
 
-  async addProductToCart(cartId, productId, quantity = 1) {
-    const cart = await cartModel.findById(cartId);
+  async createCart(data) {
+    const cart = await this.dao.create(data);
+    return new CartDTO(cart);
+  }
+
+  async updateCart(id, update) {
+    const cart = await this.dao.update(id, update);
+    return cart ? new CartDTO(cart) : null;
+  }
+
+  async addProduct(cartId, productId, quantity = 1) {
+    const cart = await this.dao.getDocumentById(cartId);
     if (!cart) return null;
 
-    const product = await productModel.findById(productId);
-    if (!product) return "PRODUCT_NOT_FOUND";
+    const product = await this.productsDao.getDocumentById(productId);
+    if (!product) throw new Error("Producto no encontrado");
 
-    const existing = cart.products.find((p) => p.product.equals(product._id));
-    if (existing) {
-      existing.quantity += quantity;
-    } else {
-      cart.products.push({ product: product._id, quantity });
+    if (product.stock <= 0) {
+      throw new Error("El producto no tiene stock disponible");
     }
 
-    await cart.save();
-    return cart;
-  }
-
-  async removeProductFromCart(cartId, productId) {
-    const cart = await cartModel.findById(cartId);
-    if (!cart) return null;
-
-    const initialLength = cart.products.length;
-    cart.products = cart.products.filter((p) => !p.product.equals(productId));
-
-    if (cart.products.length === initialLength) return "PRODUCT_NOT_IN_CART";
-
-    await cart.save();
-    return cart;
-  }
-
-  async updateCart(cartId, products) {
-    return await cartModel.findByIdAndUpdate(
-      cartId,
-      { products },
-      { new: true, runValidators: true }
+    const existing = cart.products.find(
+      (p) => p.product.toString() === productId
     );
+
+    if (existing) {
+      if (product.stock < existing.quantity + quantity) {
+        throw new Error("No hay suficiente stock para agregar más unidades");
+      }
+      existing.quantity += quantity;
+    } else {
+      if (product.stock < quantity) {
+        throw new Error("No hay suficiente stock para la cantidad solicitada");
+      }
+      cart.products.push({ product: productId, quantity });
+    }
+
+    const updatedCart = await cart.save();
+    return new CartDTO(updatedCart.toObject());
   }
 
-  async updateProductQuantity(cartId, productId, quantity) {
-    const cart = await cartModel.findById(cartId);
-    if (!cart) return null;
-
-    const product = await productModel.findById(productId);
-    if (!product) return "PRODUCT_NOT_FOUND";
-
-    cart.products = cart.products.filter((p) => !p.product.equals(productId));
-    cart.products.push({ product: productId, quantity });
-
-    await cart.save();
-    return cart;
+  async deleteCart(id) {
+    return await this.dao.delete(id);
   }
 
-  async clearCart(cartId) {
-    const cart = await cartModel.findById(cartId);
+  async removeProduct(cartId, productId) {
+    const updatedCart = await this.dao.removeProduct(cartId, productId);
+    return updatedCart ? new CartDTO(updatedCart) : null;
+  }
+
+  async purchaseCart(cartId, ticketService, userEmail) {
+    const cart = await this.dao.getDocumentById(cartId);
     if (!cart) return null;
 
-    cart.products = [];
+    let amount = 0;
+    const productsNotProcessed = [];
+    const productsPurchased = [];
+
+    for (let item of cart.products) {
+      const product = await this.productsDao.getDocumentById(item.product._id);
+
+      if (product.stock >= item.quantity) {
+        product.stock -= item.quantity;
+        await product.save();
+
+        amount += product.price * item.quantity;
+
+        productsPurchased.push({
+          title: product.title,
+          price: product.price,
+          quantity: item.quantity,
+        });
+      } else {
+        productsNotProcessed.push(item.product._id.toString());
+      }
+    }
+
+    let ticket = null;
+    if (amount > 0) {
+      // creamos el ticket con detalle de productos
+      ticket = await ticketService.createTicket(
+        userEmail,
+        amount,
+        productsPurchased
+      );
+
+      // ✅ Enviar ticket al mail del usuario con los productos comprados
+      if (ticket) {
+        await sendTicketEmail(userEmail, {
+          id: ticket._id,
+          purchase_datetime: ticket.purchase_datetime,
+          amount: ticket.amount,
+          products: productsPurchased, // 👈 solo lo que realmente se compró
+        });
+      }
+    }
+
+    // dejamos en el carrito solo lo que no se procesó
+    cart.products = cart.products.filter((item) =>
+      productsNotProcessed.includes(item.product._id.toString())
+    );
+
     await cart.save();
-    return cart;
+
+    return { ticket, productsNotProcessed };
   }
 }

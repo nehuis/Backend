@@ -1,51 +1,88 @@
-import UserService from "../services/user.service.js";
-const userService = new UserService();
+import { usersService } from "../services/user.service.js";
 
+// Obtener todos los usuarios
 export const getUsers = async (req, res) => {
   try {
-    const users = await userService.getAllUsers();
-    res.send({ status: "Success", payload: users });
+    const users = await usersService.getAll();
+    res.send({ status: "success", payload: users });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .send({ error, message: "No se pudo obtener los usuarios." });
   }
 };
 
+// Obtener un usuario por ID
 export const getUserById = async (req, res) => {
   try {
-    const user = await userService.getUserById(req.params.userId);
-    if (!user)
+    const { uid } = req.params;
+    const user = await usersService.getUserById(uid);
+
+    if (!user) {
       return res
         .status(404)
-        .send({ status: "Error", payload: "Usuario no encontrado" });
-    res.send({ status: "Success", payload: user });
+        .send({ status: "error", message: "Usuario no encontrado" });
+    }
+
+    res.send({ status: "success", payload: user });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send({ error, message: "Error al obtener el usuario." });
   }
 };
 
-export const createUser = async (req, res) => {
+// Crear un nuevo usuario
+export const saveUser = async (req, res) => {
   try {
-    const user = await userService.createUser(req.body);
-    res.status(201).send({ status: "Success", payload: user });
+    const newUser = await usersService.createUser(req.body);
+    res
+      .status(201)
+      .send({ status: "success", message: "Usuario creado", payload: newUser });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send({ error, message: "No se pudo guardar el usuario." });
   }
 };
 
+// Actualizar usuario
 export const updateUser = async (req, res) => {
   try {
-    const result = await userService.updateUser(req.params.id, req.body);
-    res.send({ status: "Success", payload: result });
+    const { uid } = req.params;
+    const user = await usersService.updateUser(uid, req.body);
+
+    if (!user) {
+      return res
+        .status(404)
+        .send({ status: "error", message: "Usuario no encontrado" });
+    }
+
+    res.send({
+      status: "success",
+      message: "Usuario actualizado",
+      payload: user,
+    });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send({ error, message: "Error al actualizar el usuario." });
   }
 };
 
+// Eliminar usuario
 export const deleteUser = async (req, res) => {
   try {
-    const result = await userService.deleteUser(req.params.id);
-    res.send({ status: "Success", payload: result });
+    const { uid } = req.params;
+    const result = await usersService.deleteUser(uid);
+
+    if (!result) {
+      return res
+        .status(404)
+        .send({ status: "error", message: "Usuario no encontrado" });
+    }
+
+    res.send({ status: "success", message: "Usuario eliminado" });
   } catch (error) {
-    res.status(500).send({ status: "Error", payload: error.message });
+    console.error(error);
+    res.status(500).send({ error, message: "Error al eliminar el usuario." });
   }
 };

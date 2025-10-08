@@ -1,64 +1,101 @@
-import SessionService from "../services/session.service.js";
-import passport from "passport";
+import UserDTO from "../dto/user.dto.js";
+import { generateJWToken } from "../utils.js";
 
-const sessionService = new SessionService();
-
-export const githubAuth = passport.authenticate("github", {
-  scope: ["user:email"],
-});
-
-export const githubCallback = [
-  passport.authenticate("github"),
-  async (req, res) => {
-    const user = req.user;
-    const tokenUser = {
-      name: `${user.first_name} ${user.last_name}`,
-      email: user.email,
-      role: user.role,
-    };
-    const access_token = generateJWToken(tokenUser);
-    res.cookie("jwtCookieToken", access_token, {
-      maxAge: 60 * 60 * 1000,
-      httpOnly: true,
-    });
-    res.redirect("/views/users");
-  },
-];
-
-export const register = [
-  passport.authenticate("register", {
-    failureRedirect: "/api/sessions/fail-register",
-  }),
-  async (req, res) => {
-    res.send({ status: "Success", payload: "Usuario creado con éxito" });
-  },
-];
-
-export const login = [
-  passport.authenticate("login", {
-    failureRedirect: "/api/sessions/fail-login",
-  }),
-  async (req, res) => {
-    const { email, password } = req.body;
-    const result = await sessionService.login(email, password);
-
-    if (!result)
+export const register = async (req, res) => {
+  try {
+    if (!req.user) {
       return res
-        .status(404)
-        .send({ status: "Error", payload: "Usuario no encontrado" });
-    if (result === "INVALID_PASSWORD")
-      return res
-        .status(401)
-        .send({ status: "Error", payload: "Contraseña incorrecta" });
+        .status(400)
+        .json({ status: "error", error: "Registro fallido" });
+    }
 
-    res.cookie("jwtCookieToken", result.access_token, {
-      maxAge: 60000,
-      httpOnly: false,
+    const token = generateJWToken({
+      _id: req.user._id,
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      email: req.user.email,
+      role: req.user.role,
     });
-    res.send({
-      status: "Success",
-      access_token: result.access_token,
-      message: "Login successful!",
+
+    res
+      .cookie("jwtCookieToken", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000, // 24 horas
+        sameSite: "lax", // o "none" si usás front separado
+        secure: false, // true si usás HTTPS
+      })
+      .status(201)
+      .json({
+        status: "success",
+        payload: new UserDTO(req.user),
+      });
+  } catch (err) {
+    res.status(500).json({ status: "error", error: err.message });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(400).json({
+        status: "error",
+        error: "Login fallido. Credenciales incorrectas",
+      });
+    }
+
+    console.log("Usuario en login:", req.user);
+
+    const token = generateJWToken({
+      _id: req.user._id,
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      email: req.user.email,
+      role: req.user.role,
     });
-  },
-];
+
+    res
+      .cookie("jwtCookieToken", token, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        status: "success",
+        payload: new UserDTO(req.user),
+      });
+  } catch (err) {
+    res.status(500).json({ status: "error", error: err.message });
+  }
+};
+
+export const githubCallback = async (req, res) => {
+  try {
+    const token = generateJWToken(req.user);
+    res
+      .cookie("jwtCookieToken", token, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000,
+      })
+      .redirect("/views/users");
+  } catch (err) {
+    res.status(500).json({ status: "error", error: err.message });
+  }
+};
+
+export const logout = (req, res) => {
+  res.clearCookie("jwtCookieToken");
+  res.status(200).json({ status: "success", message: "Logout successful" });
+};
+
+export const current = (req, res) => {
+  if (!req.user) {
+    return res
+      .status(401)
+      .json({ status: "error", message: "Not authenticated" });
+  }
+
+  return res.json({
+    status: "success",
+    payload: new UserDTO(req.user),
+  });
+};

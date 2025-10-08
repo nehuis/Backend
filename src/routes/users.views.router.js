@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { passportCall, authorization } from "../utils.js";
+import { passportCall } from "../utils.js";
 
 const router = Router();
 

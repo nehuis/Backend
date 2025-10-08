@@ -1,28 +1,32 @@
 const form = document.getElementById("loginForm");
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
   const obj = {};
-
   data.forEach((value, key) => (obj[key] = value));
 
-  fetch("/api/sessions/login", {
-    method: "POST",
-    body: JSON.stringify(obj),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.status === "Success") {
-        localStorage.setItem("access_token", data.access_token);
-
-        window.location.replace("/views/users");
-      } else {
-        console.error("Error en login:", data);
-      }
+  try {
+    const res = await fetch("/api/sessions/login", {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
     });
+
+    const dataRes = await res.json();
+
+    if (res.ok && dataRes.status === "success") {
+      console.log("Logueado:", dataRes);
+
+      window.location.replace("/views/users");
+    } else {
+      alert(dataRes.error || "Error en login");
+    }
+  } catch (err) {
+    console.error("Fetch error:", err);
+  }
 });

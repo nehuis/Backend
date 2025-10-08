@@ -1,16 +1,30 @@
-<h1>Carrito: {{cart._id}}</h1>
+<div class="form-wrapper">
+  <div class="cart-card">
+    <h1>Carrito</h1>
+    <p class="cart-id">ID: {{cart._id}}</p>
 
-{{#if cart.products.length}}
-  <ul>
-    {{#each cart.products}}
-      <li>
-        <strong>{{this.product.title}}</strong><br />
-        Precio: ${{this.product.price}}<br />
-        Cantidad:
-        {{this.quantity}}
-      </li>
-    {{/each}}
-  </ul>
-{{else}}
-  <p>El carrito está vacío.</p>
-{{/if}}
+    {{#if cart.products.length}}
+      <ul class="cart-list">
+        {{#each cart.products}}
+          <li class="cart-item">
+            <div class="item-info">
+              <strong class="item-title">{{this.title}}</strong>
+              <p class="item-price">Precio: ${{this.price}}</p>
+              <p class="item-qty">Cantidad: {{this.quantity}}</p>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+
+      <div class="cart-total">
+        <p>Total estimado: <span class="total-amount" id="total"></span></p>
+      </div>
+
+      <button class="checkout-btn" onclick="finalizarCompra()">
+        Finalizar compra
+      </button>
+    {{else}}
+      <p class="empty-cart">El carrito está vacío</p>
+    {{/if}}
+  </div>
+</div>

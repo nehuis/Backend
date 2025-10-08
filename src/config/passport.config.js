@@ -5,6 +5,10 @@ import GitHubStrategy from "passport-github2";
 import { userModel } from "../models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import { PRIVATE_KEY } from "../utils.js";
+import { usersService } from "../services/user.service.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const localStrategy = passportLocal.Strategy;
 const JwtStrategy = jwtStrategy.Strategy;
@@ -19,10 +23,12 @@ const initializePassport = () => {
         secretOrKey: PRIVATE_KEY,
       },
       async (jwt_payload, done) => {
-        console.log("Entrando a PassPort_JWT");
         try {
-          console.log("JWT Obtenido del payload: ", jwt_payload);
-          return done(null, jwt_payload.user);
+          const user = await userModel.findById(jwt_payload._id).lean();
+          if (!user) {
+            return done(null, false, { message: "Usuario no encontrado" });
+          }
+          return done(null, user);
         } catch (error) {
           return done(error);
         }
@@ -34,31 +40,14 @@ const initializePassport = () => {
     "github",
     new GitHubStrategy(
       {
-        clientID: "Iv23liuqggsN2X6E50J4",
-        clientSecret: "8da2ebffa1e6569db3060e2905f12fea7c399cda",
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
         callbackURL: "http://localhost:8080/api/sessions/githubcallback",
         scope: ["user:email"],
       },
       async (_accessToken, _refreshToken, profile, done) => {
         try {
-          const email = profile._json?.email || profile.emails?.[0]?.value;
-          const fullName =
-            profile._json?.name || profile.displayName || profile.username;
-
-          const [first_name, ...rest] = fullName.split(" ");
-          const last_name = rest.join(" ") || "";
-
-          let user = await userModel.findOne({ email });
-          if (!user) {
-            user = await userModel.create({
-              first_name,
-              last_name,
-              email,
-              role: "user",
-              password: "",
-            });
-          }
-
+          const user = await usersService.findOrCreateFromGithub(profile);
           return done(null, user);
         } catch (err) {
           return done(err);
@@ -97,7 +86,7 @@ const initializePassport = () => {
 
           done(null, result);
         } catch (error) {
-          return done("Error al registrar el usuario. Error: " + error);
+          return done(new Error("Error al registrar el usuario: " + error));
         }
       }
     )
@@ -125,7 +114,7 @@ const initializePassport = () => {
 
           done(null, user);
         } catch (error) {
-          return done("Error al iniciar sesión: " + error);
+          return done(new Error("Error al iniciar sesión: " + error));
         }
       }
     )
@@ -147,7 +136,7 @@ const initializePassport = () => {
 
 const cookieExtractor = (req) => {
   let token = null;
-  console.log("Estramos en cookieExtractor");
+  console.log("Entramos en cookieExtractor");
   if (req && req.cookies) {
     console.log("Cookies presentes: ", req.cookies);
     token = req.cookies["jwtCookieToken"];

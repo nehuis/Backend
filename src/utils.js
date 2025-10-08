@@ -4,6 +4,8 @@ import multer from "multer";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
+import dotenv from "dotenv";
+dotenv.config({ quiet: true });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,64 +39,80 @@ export const isValidPassword = (passwordDB, passwordClient) => {
   return bcrypt.compareSync(passwordClient, passwordDB);
 };
 
-export const PRIVATE_KEY = "nehuisPrivate";
+export const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 export const generateJWToken = (user) => {
-  return jwt.sign({ user }, PRIVATE_KEY, { expiresIn: "2h" });
+  return jwt.sign(
+    {
+      _id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      role: user.role,
+    },
+    PRIVATE_KEY,
+    { expiresIn: "24h" }
+  );
 };
 
 export const authToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  console.log("Headers", authHeader);
-
-  if (!authHeader) {
+  const token = req.cookies?.jwtCookieToken;
+  console.log("Token desde cookie:", token);
+  if (!token) {
     return res
       .status(401)
-      .send({ error: "Usuario no autenticado o sin token" });
+      .json({ error: "Usuario no autenticado o sin token" });
   }
-
-  const token = authHeader.split(" ")[1];
-
   jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
-    if (error) return res.status(403).send({ error: "Token inválido" });
-
-    req.user = credentials.user;
-    console.log(req.user);
-
+    if (error) {
+      console.error("Error verificando token:", error?.message || error);
+      return res.status(403).json({ error: "Token inválido" });
+    }
+    req.user = credentials;
+    console.log("Usuario autenticado:", req.user);
     next();
   });
 };
 
 export const passportCall = (strategy) => {
-  return async (req, res, next) => {
-    console.log("Entrando a passportCall con strategy: ", strategy);
-    passport.authenticate(strategy, function (err, user, info) {
-      if (err) return next(err);
-
-      if (!user) {
-        return res
-          .status(401)
-          .send({ error: info.message ? info.message : info.toString() });
+  return (req, res, next) => {
+    console.log("Entrando a passportCall con strategy:", strategy);
+    passport.authenticate(strategy, { session: false }, (err, user, info) => {
+      if (err) {
+        console.error("Error en Passport:", err);
+        return next(err);
       }
 
-      console.log("Usuario obtenido del strategy: ", user);
+      if (!user) {
+        console.warn("No se encontró usuario en JWT:", info);
+        return res.status(401).json({
+          error: info?.message || "Usuario no autenticado",
+        });
+      }
 
+      console.log("Usuario obtenido del strategy:", user);
       req.user = user;
       next();
     })(req, res, next);
   };
 };
 
-export const authorization = (role) => {
+export const authorization = (...roles) => {
   return async (req, res, next) => {
-    if (!req.user)
-      return res.status(401).send("Unauthorized: User not found in JWT");
+    console.log("Roles permitidos:", roles);
+    console.log("Usuario recibido en req.user:", req.user);
 
-    if (req.user.role != role) {
+    if (!req.user) {
+      return res.status(401).send("Unauthorized: User not found in JWT");
+    }
+
+    if (!roles.includes(req.user.role)) {
+      console.log("Acceso denegado:", req.user.role);
       return res
         .status(403)
-        .send("Forbidden: El usuario no tiene permisos con este rol");
+        .send(`Acceso denegado: el rol '${req.user.role}' no tiene permisos`);
     }
+
     next();
   };
 };

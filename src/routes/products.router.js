@@ -1,18 +1,38 @@
 import { Router } from "express";
 import {
   getProducts,
-  getProductById,
+  getProductDetail,
   createProduct,
   updateProduct,
   deleteProduct,
 } from "../controllers/product.controller.js";
+import { passportCall, authorization } from "../utils.js";
 
 const router = Router();
 
-router.get("/", getProducts); // Listar productos (con paginación / filtros)
-router.get("/:productId", getProductById); // Obtener producto por ID
-router.post("/", createProduct); // Crear producto
-router.put("/:productId", updateProduct); // Actualizar producto
-router.delete("/:productId", deleteProduct); // Eliminar producto
+router.get(
+  "/",
+  passportCall("jwt"),
+  authorization("admin", "user"),
+  getProducts
+);
+
+router.get(
+  "/:pid",
+  passportCall("jwt"),
+  authorization("admin", "user"),
+  getProductDetail
+);
+
+router.post("/", passportCall("jwt"), authorization("admin"), createProduct);
+
+router.put("/:pid", passportCall("jwt"), authorization("admin"), updateProduct);
+
+router.delete(
+  "/:pid",
+  passportCall("jwt"),
+  authorization("admin"),
+  deleteProduct
+);
 
 export default router;

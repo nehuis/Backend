@@ -1,0 +1,57 @@
+<h2>
+  {{#if product}}Editar Producto{{else}}Crear Producto{{/if}}
+</h2> 
+
+<form action="{{#if product}}/products/{{product.id}}/edit{{else}}/products/create{{/if}}" method="POST">
+  <div> 
+    <label for="title">Título</label> 
+    <input type="text" id="title" name="title" value="{{product.title}}" required />
+  </div> 
+
+  <div> 
+    <label for="description">Descripción</label> 
+    <textarea id="description" name="description" required>{{product.description}}</textarea> 
+  </div> 
+
+  <div> 
+    <label for="code">Código</label> 
+    <input type="text" id="code" name="code" value="{{product.code}}" required /> 
+  </div> 
+
+  <div> 
+    <label for="price">Precio</label> 
+    <input type="number" id="price" name="price" step="0.01" value="{{product.price}}" required /> 
+  </div> 
+
+  <div> 
+    <label for="status">Estado</label> 
+    <select id="status" name="status"> 
+      <option value="true" {{#if product.status}}selected{{/if}}>Activo</option> 
+      <option value="false" {{#unless product.status}}selected{{/unless}}>Inactivo</option> 
+    </select> 
+  </div> 
+
+  <div> 
+    <label for="stock">Stock</label> 
+    <input type="number" id="stock" name="stock" value="{{product.stock}}" required /> 
+  </div> 
+
+  <div> 
+    <label for="category">Categoría</label> 
+    <input type="text" id="category" name="category" value="{{product.category}}" required /> 
+  </div> 
+
+  <br /> 
+
+  <button type="submit"> 
+    {{#if product}}Guardar Cambios{{else}}Crear Producto{{/if}} 
+  </button> 
+</form> 
+
+{{#if product}} 
+  <form action="/products/{{product.id}}/delete" method="POST" style="margin-top: 10px;"> 
+    <button type="submit" style="background: red; color: white;"> 
+      Eliminar Producto 
+    </button> 
+  </form> 
+{{/if}}

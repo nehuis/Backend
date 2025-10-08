@@ -2,17 +2,18 @@ import { Router } from "express";
 import {
   getUsers,
   getUserById,
-  createUser,
+  saveUser,
   updateUser,
   deleteUser,
 } from "../controllers/user.controller.js";
+import { authorization } from "../utils.js";
 
 const router = Router();
 
-router.get("/", getUsers); // Listar usuarios
-router.get("/:userId", getUserById); // Usuario por ID
-router.post("/", createUser); // Crear usuario
-router.put("/:id", updateUser); // Actualizar usuario
-router.delete("/:id", deleteUser); // Eliminar usuario
+router.get("/", authorization("admin"), getUsers);
+router.get("/:uid", authorization("admin"), getUserById);
+router.post("/", authorization("admin"), saveUser);
+router.put("/:uid", authorization("admin", "user"), updateUser);
+router.delete("/:uid", authorization("admin"), deleteUser);
 
 export default router;

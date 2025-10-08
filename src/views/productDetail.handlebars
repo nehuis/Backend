@@ -1,13 +1,35 @@
-<body data-cartid="{{cartId}}">
-  <h2>{{product.title}}</h2>
-  <p>Descripción: {{product.description}}</p>
-  <p>Precio: ${{product.price}}</p>
-  <p>Stock: {{product.stock}}</p>
-  <p>Categoría: {{product.category}}</p>
+<body>
+  <div class="form-wrapper">
+    <div class="product-detail-card">
+      <h2 class="product-title">{{product.title}}</h2>
 
-  <label for="qty">Cantidad:</label>
-  <input id="qty" type="number" value="1" min="1" />
-  <button onclick="agregarAlCarrito('{{product._id}}')">Agregar al carrito</button>
+      <div class="product-info">
+        <p><strong>Descripción:</strong> {{product.description}}</p>
+        <p><strong>Precio:</strong> ${{product.price}}</p>
+        <p><strong>Stock:</strong> {{product.stock}}</p>
+        <p><strong>Categoría:</strong> {{product.category}}</p>
+      </div>
 
-  <script src="/js/index.js"></script>
+      <div class="product-actions">
+        <label for="qty">Cantidad:</label>
+        <input id="qty" type="number" value="1" min="1" />
+
+        {{#if product.stock}}
+          <button
+            class="add-cart-btn"
+            onclick="agregarAlCarrito('{{product.id}}')"
+          >
+            Agregar al carrito
+          </button>
+        {{else}}
+          <button class="disabled-btn" disabled>Sin stock</button>
+        {{/if}}
+      </div>
+
+      <button id="btn-ir-carrito" type="button" class="go-cart-btn">
+        Ir a tu carrito
+      </button>
+    </div>
+  </div>
+
 </body>

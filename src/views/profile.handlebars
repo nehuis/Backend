@@ -3,14 +3,14 @@
     <h1>Perfil de Usuario</h1>
 
     <div class="profile-card">
-      <p><strong>Nombre:</strong> {{user.name}}</p>
-      <p><strong>Email:</strong> {{user.email}}</p>
+      <p>Nombre: {{user.first_name}} {{user.last_name}}</p>
+      <p>Email: {{user.email}}</p>
       <p><strong>Fecha de registro:</strong> {{user.fechaCreacion}}</p>
     </div>
 
-    <form action="/logout" method="POST">
-      <button type="submit">Cerrar Sesión</button>
-    </form>
+    <a href="/products">
+      <button type="button">Ir a Productos</button>
+    </a>
   {{else}}
     <h1>Inicia sesión para ver tu perfil</h1>
     <a href="/views/users/login">Ingresá</a>

@@ -1,25 +1,40 @@
-import { userModel } from "../models/user.model.js";
-import { isValidPassword, generateJWToken } from "../utils.js";
+import UserDTO from "../dto/user.dto.js";
+import jwt from "jsonwebtoken";
+import config from "../config/config.js";
 
 export default class SessionService {
-  async login(email, password) {
-    const user = await userModel.findOne({ email });
-    if (!user) return null;
-    if (!isValidPassword(user.password, password)) return "INVALID_PASSWORD";
+  async generateToken(user) {
+    const token = jwt.sign(
+      {
+        id: user._id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        role: user.role,
+      },
+      config.secret,
+      {
+        expiresIn: "1h",
+      }
+    );
 
-    const tokenUser = {
-      name: `${user.first_name} ${user.last_name}`,
-      email: user.email,
-      role: user.role,
-      fechaCreacion: user.fechaCreacion,
-    };
-
-    const access_token = generateJWToken(tokenUser);
-    return { user, access_token };
+    return token;
   }
 
-  async register(data) {
-    const user = await userModel.create(data);
-    return user;
+  async register(user) {
+    return new UserDTO(user);
+  }
+
+  async login(user) {
+    const token = await this.generateToken(user);
+    return { user: new UserDTO(user), token };
+  }
+
+  async current(user) {
+    return new UserDTO(user);
+  }
+
+  async logout(res) {
+    res.clearCookie("jwtCookieToken");
+    return { message: "Sesión cerrada" };
   }
 }
