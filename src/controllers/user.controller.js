@@ -1,6 +1,5 @@
 import { usersService } from "../services/user.service.js";
 
-// Obtener todos los usuarios
 export const getUsers = async (req, res) => {
   try {
     const users = await usersService.getAll();
@@ -13,7 +12,6 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// Obtener un usuario por ID
 export const getUserById = async (req, res) => {
   try {
     const { uid } = req.params;
@@ -32,7 +30,6 @@ export const getUserById = async (req, res) => {
   }
 };
 
-// Crear un nuevo usuario
 export const saveUser = async (req, res) => {
   try {
     const newUser = await usersService.createUser(req.body);
@@ -45,7 +42,6 @@ export const saveUser = async (req, res) => {
   }
 };
 
-// Actualizar usuario
 export const updateUser = async (req, res) => {
   try {
     const { uid } = req.params;
@@ -68,7 +64,6 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// Eliminar usuario
 export const deleteUser = async (req, res) => {
   try {
     const { uid } = req.params;

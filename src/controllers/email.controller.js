@@ -108,7 +108,7 @@ export const sendTicketEmail = async (userEmail, ticket) => {
   const mailOptions = {
     from: "Servidor Node.js -" + process.env.GMAIL_USER,
     to: userEmail,
-    subject: `🎟️ Ticket de compra #${ticket.id}`,
+    subject: `Ticket de compra #${ticket.id}`,
     html: `
       <div style="font-family: Arial, sans-serif; padding: 10px;">
         <h2>Gracias por tu compra</h2>
@@ -123,10 +123,10 @@ export const sendTicketEmail = async (userEmail, ticket) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Ticket enviado: " + info.messageId);
+    console.log("Ticket enviado: " + info.messageId);
     return info;
   } catch (error) {
-    console.error("❌ Error al enviar ticket:", error);
+    console.error("Error al enviar ticket:", error);
     throw error;
   }
 };

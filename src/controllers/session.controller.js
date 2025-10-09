@@ -20,9 +20,9 @@ export const register = async (req, res) => {
     res
       .cookie("jwtCookieToken", token, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 24 horas
-        sameSite: "lax", // o "none" si usás front separado
-        secure: false, // true si usás HTTPS
+        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: "lax",
+        secure: false,
       })
       .status(201)
       .json({
@@ -80,22 +80,4 @@ export const githubCallback = async (req, res) => {
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });
   }
-};
-
-export const logout = (req, res) => {
-  res.clearCookie("jwtCookieToken");
-  res.status(200).json({ status: "success", message: "Logout successful" });
-};
-
-export const current = (req, res) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .json({ status: "error", message: "Not authenticated" });
-  }
-
-  return res.json({
-    status: "success",
-    payload: new UserDTO(req.user),
-  });
 };

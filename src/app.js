@@ -31,8 +31,7 @@ import productsViewsRouter from "./routes/products.views.router.js";
 import ProductService from "./services/product.service.js";
 const productService = new ProductService();
 
-import { logger } from "./config/logger_BASE.js";
-import { addLogger } from "./config/logger_CUSTOM.js";
+import { addLogger, logger } from "./config/logger_CUSTOM.js";
 
 // Configuración de Express
 const app = express();

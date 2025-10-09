@@ -98,25 +98,22 @@ export default class CartService {
 
     let ticket = null;
     if (amount > 0) {
-      // creamos el ticket con detalle de productos
       ticket = await ticketService.createTicket(
         userEmail,
         amount,
         productsPurchased
       );
 
-      // ✅ Enviar ticket al mail del usuario con los productos comprados
       if (ticket) {
         await sendTicketEmail(userEmail, {
           id: ticket._id,
           purchase_datetime: ticket.purchase_datetime,
           amount: ticket.amount,
-          products: productsPurchased, // 👈 solo lo que realmente se compró
+          products: productsPurchased,
         });
       }
     }
 
-    // dejamos en el carrito solo lo que no se procesó
     cart.products = cart.products.filter((item) =>
       productsNotProcessed.includes(item.product._id.toString())
     );

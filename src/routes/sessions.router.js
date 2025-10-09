@@ -4,8 +4,6 @@ import {
   register,
   login,
   githubCallback,
-  current,
-  logout,
 } from "../controllers/session.controller.js";
 
 const router = Router();
@@ -34,12 +32,5 @@ router.get(
   passport.authenticate("github", { failureRedirect: "/views/users/login" }),
   githubCallback
 );
-
-router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  current
-);
-router.post("/logout", logout);
 
 export default router;

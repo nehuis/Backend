@@ -56,7 +56,6 @@ logger.info(
   `Logger Mode: ${config.environment === "production" ? "Prod" : "dev"}`
 );
 
-// Creamos un middleware de log
 export const addLogger = (req, res, next) => {
   if (config.environment === "production") {
     req.logger = prodLogger;

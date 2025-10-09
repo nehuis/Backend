@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { addLogger, logger } from "./logger_CUSTOM.js";
+import { logger } from "./logger_CUSTOM.js";
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
 
