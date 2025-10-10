@@ -55,11 +55,9 @@ body {
   color: var(--c-text);
   line-height: 1.6;
 }
-
 h1 {
   justify-self: center;
 }
-
 p {
   justify-self: center;
 }
@@ -326,6 +324,9 @@ button:hover,
   font-weight: 600;
   opacity: 0.8;
 }
+.disabled-btn:hover {
+  background-color: red;
+}
 
 .go-cart-btn {
   display: block;
@@ -394,6 +395,9 @@ button:hover,
   margin: 0.4rem 0;
   font-size: 0.95rem;
   color: var(--c-subtext);
+}
+.go-to {
+  margin-left: 50%;
 }
 
 /* === TARJETA DE GITHUB === */
@@ -649,10 +653,4 @@ button:hover,
 
 .delete-form {
   margin-top: 0.5rem;
-}
-
-@media (max-width: 500px) {
-  .form {
-    padding: 1.5rem;
-  }
 }

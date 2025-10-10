@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+dotenv.config({ quiet: true });
+
 import { Command } from "commander";
 
 const program = new Command();
@@ -14,8 +16,6 @@ console.log("program.opts(): ", program.opts());
 
 const enviroment = program.opts().Mode;
 console.log("enviroment: ", enviroment);
-
-dotenv.config({ quiet: true });
 
 export default {
   persistence: program.opts().persist,
