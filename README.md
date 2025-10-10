@@ -90,9 +90,6 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 | PUT    | `/api/products/:pid`      | Actualizar producto                       |
 | DELETE | `/api/products/:pid`      | Eliminar producto                         |
 
-Filtros disponibles:
-?category=laptops, ?sort=asc o ?sort=desc, ?limit=5&page=2
-
 ### Carritos
 
 | Método | Ruta                            | Descripción                   |
