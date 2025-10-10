@@ -1,5 +1,10 @@
 # E-Commerce Backend con Node.js, Express y MongoDB
 
+![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
+![Express](https://img.shields.io/badge/Express.js-black)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 Este proyecto es un backend completo para una tienda e-commerce desarrollado con **Node.js**, **Express** y **MongoDB**.  
 Permite gestionar productos, carritos y usuarios, además de contar con vistas dinámicas creadas con **Handlebars**.  
 El sistema incluye autenticación mediante **email y contraseña** o **cuenta de GitHub**, envío automático de tickets de compra por correo electrónico y la posibilidad de enviar SMS con **Twilio**.
@@ -51,30 +56,30 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 2. Instalar las dependencias:
 
    ```bash
-      npm install
+   npm install
    ```
 
 3. Configurar el archivo .env con las credenciales necesarias:
 
    ```bash
-      PORT=8080
-      MONGO_URI=mongodb+srv://...
-      GITHUB_CLIENT_ID=...
-      GITHUB_CLIENT_SECRET=...
-      GITHUB_CALLBACK_URL=http://localhost:8080/api/sessions/githubcallback
-      GMAIL_USER=tu_correo@gmail.com
-      GMAIL_PASS=tu_contraseña_o_token
-      TWILIO_SID=...
-      TWILIO_AUTH_TOKEN=...
-      TWILIO_PHONE=...
+   PORT=8080
+   MONGO_URI=mongodb+srv://...
+   GITHUB_CLIENT_ID=...
+   GITHUB_CLIENT_SECRET=...
+   GITHUB_CALLBACK_URL=http://localhost:8080/api/sessions/githubcallback
+   GMAIL_USER=tu_correo@gmail.com
+   GMAIL_PASS=tu_contraseña_o_token
+   TWILIO_SID=...
+   TWILIO_AUTH_TOKEN=...
+   TWILIO_PHONE=...
    ```
 
 4. Iniciar el servidor:
 
    ```bash
-      npm start
-      # o en modo desarrollo:
-      npm run dev
+   npm start
+   # o en modo desarrollo:
+   npm run dev
    ```
 
 ## Endpoints principales de la API
@@ -102,32 +107,25 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 
 ## Vistas con Handlebars
 
-- / → Página principal con listado de productos (paginación y filtros)
-
-- /products/:pid → Detalle del producto
-
-- /carts/:cid → Vista del carrito de compra
-
-- /views/users/register → Registro de usuario
-
-- /views/users/login → Inicio de sesión
-
-- /profile → Perfil del usuario logueado
+- `/` → Página principal con listado de productos (paginación y filtros)
+- `/products/:pid` → Detalle del producto
+- `/carts/:cid` → Vista del carrito de compra
+- `/views/users/register` → Registro de usuario
+- `/views/users/login` → Inicio de sesión
+- `/profile` → Perfil del usuario logueado
 
 ## Envío de tickets y SMS
 
 - Al completar una compra, el sistema genera automáticamente un ticket de compra.
-
 - El ticket se envía al correo electrónico del cliente mediante Nodemailer.
-
 - Además, desde Postman se pueden enviar mensajes SMS utilizando Twilio.
 
 ---
 
 ## Licencia
 
-- Este proyecto se distribuye bajo la licencia MIT.
+Este proyecto se distribuye bajo la licencia MIT.
 
 ## Autor
 
-- Desarrollado por Nehuel Caraballo.
+Desarrollado por Nehuel Caraballo.
