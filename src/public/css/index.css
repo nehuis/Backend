@@ -16,7 +16,7 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  background: var(--c-primary);
+  background: var(--c-subtext);
   color: #fff;
   border: none;
   border-radius: var(--c-radius);
@@ -143,9 +143,14 @@ button:hover,
   text-align: center;
 }
 .extra-links p {
-  margin: 0.6rem 0;
+  margin: 0.6rem;
   font-size: 0.95rem;
   color: var(--c-subtext);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 1rem;
+  border-radius: var(--c-radius);
+  box-shadow: var(--c-shadow);
+  animation: fadeIn 0.4s ease-in-out;
 }
 .extra-links a {
   color: var(--c-accent);
@@ -155,6 +160,42 @@ button:hover,
 }
 .extra-links a:hover {
   color: var(--c-primary);
+}
+
+.login {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--c-subtext);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 1rem;
+  border-radius: var(--c-radius);
+  box-shadow: var(--c-shadow);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.login a {
+  color: var(--c-accent);
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.login a:hover {
+  color: var(--c-primary-hover);
+  text-shadow: 0 0 6px rgba(108, 99, 255, 0.5);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* === PRODUCTOS === */
@@ -355,18 +396,40 @@ button:hover,
   color: var(--c-subtext);
 }
 
-/* Botón GitHub */
-.github-card button {
-  background-color: #24292f;
+/* === TARJETA DE GITHUB === */
+.github-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--c-radius);
+  box-shadow: var(--c-shadow);
+  padding: 2rem;
+  max-width: 420px;
+  margin: 2rem auto;
+  text-align: center;
+  justify-self: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.github-card h1 {
+  color: var(--c-primary);
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.github-card a button {
+  background: #24292f;
   color: #fff;
-  padding: 0.7rem 1.5rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
   border-radius: var(--c-radius);
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
-.github-card button:hover {
-  background-color: #444c56;
+.github-card a button:hover {
+  background: #444c56;
   transform: translateY(-2px);
 }
 

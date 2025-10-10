@@ -39,7 +39,6 @@ const devLogger = winston.createLogger({
 });
 
 const prodLogger = winston.createLogger({
-  //Levels
   levels: customLevelsOptions.levels,
   transports: [
     new winston.transports.Console({ level: "debug" }),
