@@ -7,8 +7,7 @@ import { createHash, isValidPassword } from "../utils.js";
 import { PRIVATE_KEY } from "../utils.js";
 import { usersService } from "../services/user.service.js";
 import dotenv from "dotenv";
-
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const localStrategy = passportLocal.Strategy;
 const JwtStrategy = jwtStrategy.Strategy;
