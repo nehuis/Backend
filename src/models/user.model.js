@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: [true, "El email es obligatorio"],
   },
-  password: String,
+  password: { type: String, required: true },
   fechaCreacion: {
     type: Date,
     default: Date.now,
@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
     enum: ["user", "admin"],
+  },
+  pets: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Pet",
+    default: [],
   },
 });
 

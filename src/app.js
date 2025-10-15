@@ -21,6 +21,7 @@ import userRouter from "./routes/user.router.js";
 import sessionRouter from "./routes/sessions.router.js";
 import emailRouter from "./routes/email.router.js";
 import smsRouter from "./routes/sms.router.js";
+import mocksRouter from "./routes/mocks.router.js";
 
 // Routers de vistas
 import userViewRouter from "./routes/users.views.router.js";
@@ -79,6 +80,7 @@ app.use("/api/users", userRouter);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/email", emailRouter);
 app.use("/api/sms", smsRouter);
+app.use("/api/mocks", mocksRouter);
 
 // Vistas
 app.use("/views/users", userViewRouter);

@@ -6,9 +6,11 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
+import { faker } from "@faker-js/faker";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const passwordHash = bcrypt.hashSync("coder123", 10);
 
 export default __dirname;
 
@@ -114,5 +116,26 @@ export const authorization = (...roles) => {
     }
 
     next();
+  };
+};
+
+export const generateUser = () => {
+  return {
+    _id: faker.database.mongodbObjectId(),
+    first_name: faker.person.firstName(),
+    last_name: faker.person.lastName(),
+    email: faker.internet.email(),
+    password: passwordHash,
+    role: faker.helpers.arrayElement(["user", "admin"]),
+    pets: [],
+  };
+};
+
+export const generatePet = () => {
+  return {
+    _id: faker.database.mongodbObjectId(),
+    name: faker.animal.dog(),
+    species: faker.animal.type(),
+    birthDate: faker.date.past(),
   };
 };
