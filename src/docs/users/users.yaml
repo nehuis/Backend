@@ -1,0 +1,183 @@
+paths:
+  /api/users:
+    get:
+      summary: Obtiene la lista de todos los usuarios.
+      description: Retorna todos los usuarios registrados. Solo accesible por administradores.
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Lista de usuarios obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+        "403":
+          description: Acceso denegado. El usuario no tiene permisos de administrador.
+        "500":
+          description: Error interno del servidor.
+
+    post:
+      summary: Crea un nuevo usuario.
+      description: Permite al administrador registrar un nuevo usuario en el sistema.
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "201":
+          description: Usuario creado exitosamente.
+        "400":
+          description: Datos inválidos o incompletos.
+        "403":
+          description: Acceso denegado. Solo los administradores pueden crear usuarios.
+        "500":
+          description: Error interno al crear el usuario.
+
+  /api/users/{uid}:
+    get:
+      summary: Obtiene la información de un usuario específico.
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del usuario a obtener.
+      responses:
+        "200":
+          description: Usuario encontrado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          description: Acceso denegado. Solo los administradores pueden ver usuarios.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error interno del servidor.
+
+    put:
+      summary: Actualiza la información de un usuario.
+      tags:
+        - Users
+      description: Permite a un administrador o al propio usuario actualizar su información.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del usuario a actualizar.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "200":
+          description: Usuario actualizado correctamente.
+        "403":
+          description: Acceso denegado. Solo el usuario o el administrador pueden modificarlo.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error interno del servidor.
+
+    delete:
+      summary: Elimina un usuario.
+      description: Permite eliminar un usuario específico. Solo los administradores pueden hacerlo.
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del usuario a eliminar.
+      responses:
+        "200":
+          description: Usuario eliminado correctamente.
+        "403":
+          description: Acceso denegado. Solo los administradores pueden eliminar usuarios.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error interno del servidor.
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 670fcb08b53fdb92e9ac421f
+        first_name:
+          type: string
+          example: Juan
+        last_name:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          format: email
+          example: juanperez@example.com
+        role:
+          type: string
+          enum: [user, admin]
+          example: user
+        pets:
+          type: array
+          items:
+            type: string
+            example: 6710da62d8b2ff29bbbc4123
+
+    UserInput:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: Juan
+        last_name:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          format: email
+          example: juanperez@example.com
+        password:
+          type: string
+          format: password
+          example: 123456
+        role:
+          type: string
+          enum: [user, admin]
+          example: user

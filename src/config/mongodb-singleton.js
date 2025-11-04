@@ -21,8 +21,14 @@ export default class MongoDBSingleton {
 
   #connectMongoDB = async () => {
     try {
-      await mongoose.connect(process.env.MONGO_URL);
-      logger.debug("Conectado a la BD");
+      const env = process.env.NODE_ENV || "development";
+
+      const mongoUrl =
+        env === "test" ? process.env.MONGO_URL_TEST : process.env.MONGO_URL;
+
+      await mongoose.connect(mongoUrl, {});
+
+      logger.debug(`Conectado a MongoDB (${env})`);
     } catch (error) {
       console.error("No se pudo conectar a la BD: " + error);
       process.exit();

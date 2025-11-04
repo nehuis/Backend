@@ -1,0 +1,100 @@
+paths:
+  /api/sessions/register:
+    post:
+      summary: Registra un nuevo usuario en el sistema.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: Juan
+                last_name:
+                  type: string
+                  example: Pérez
+                email:
+                  type: string
+                  format: email
+                  example: juanperez@example.com
+                password:
+                  type: string
+                  format: password
+                  example: 123456
+              required:
+                - first_name
+                - last_name
+                - email
+                - password
+      responses:
+        "200":
+          description: Usuario registrado correctamente.
+        "302":
+          description: Redirección a la vista de usuarios (en caso de error en autenticación).
+        "400":
+          description: Datos inválidos o incompletos.
+        "500":
+          description: Error interno del servidor.
+
+  /api/sessions/login:
+    post:
+      summary: Inicia sesión con un usuario existente.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: juanperez@example.com
+                password:
+                  type: string
+                  format: password
+                  example: 123456
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Inicio de sesión exitoso. Devuelve token o establece sesión.
+        "302":
+          description: Redirección a la vista de usuarios (en caso de error en autenticación).
+        "401":
+          description: Credenciales inválidas.
+        "500":
+          description: Error interno del servidor.
+
+  /api/sessions/github:
+    get:
+      summary: Inicia el flujo de autenticación con GitHub.
+      tags:
+        - Sessions
+      description: Redirige al usuario al login de GitHub para otorgar permisos.
+      responses:
+        "302":
+          description: Redirección a GitHub para autenticación.
+        "500":
+          description: Error al iniciar autenticación con GitHub.
+
+  /api/sessions/githubcallback:
+    get:
+      summary: Callback de autenticación de GitHub.
+      tags:
+        - Sessions
+      description: Recibe la respuesta de GitHub tras autenticación exitosa.
+      responses:
+        "200":
+          description: Inicio de sesión exitoso con GitHub.
+        "302":
+          description: Redirección a la vista de login si falla la autenticación.
+        "500":
+          description: Error durante el proceso de autenticación.

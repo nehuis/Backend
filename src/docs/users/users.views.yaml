@@ -1,0 +1,57 @@
+paths:
+  /views/users/login:
+    get:
+      summary: Renderiza la vista de inicio de sesión.
+      description: Muestra el formulario para que el usuario inicie sesión.
+      tags:
+        - User Views
+      responses:
+        "200":
+          description: Vista de login renderizada correctamente.
+        "500":
+          description: Error al renderizar la vista de login.
+
+  /views/users/register:
+    get:
+      summary: Renderiza la vista de registro.
+      description: Muestra el formulario para crear una nueva cuenta de usuario.
+      tags:
+        - User Views
+      responses:
+        "200":
+          description: Vista de registro renderizada correctamente.
+        "500":
+          description: Error al renderizar la vista de registro.
+
+  /views/users:
+    get:
+      summary: Renderiza la vista del perfil del usuario autenticado.
+      description: Muestra los datos del usuario logueado. Requiere autenticación JWT.
+      tags:
+        - User Views
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Vista del perfil renderizada correctamente.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body><h1>Perfil del usuario</h1></body></html>"
+        "401":
+          description: No autorizado. Token JWT inválido o no proporcionado.
+        "500":
+          description: Error al renderizar la vista del perfil.
+
+  /views/users/error:
+    get:
+      summary: Renderiza la vista de error.
+      description: Muestra una página de error en caso de fallo en el registro o inicio de sesión.
+      tags:
+        - User Views
+      responses:
+        "200":
+          description: Vista de error renderizada correctamente.
+        "500":
+          description: Error al renderizar la vista de error.

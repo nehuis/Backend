@@ -1,0 +1,114 @@
+paths:
+  /api/mocks/mockingpets:
+    get:
+      summary: Genera mascotas de prueba (mocking).
+      description: Crea 100 objetos de mascotas falsas utilizando Faker y los devuelve en formato JSON.
+      tags:
+        - Mocking
+      responses:
+        "200":
+          description: Lista de mascotas generadas exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Rex
+                        species:
+                          type: string
+                          example: dog
+                        birthDate:
+                          type: string
+                          format: date-time
+                          example: 2020-06-12T00:00:00.000Z
+        "500":
+          description: Error al generar las mascotas.
+
+  /api/mocks/mockingusers:
+    get:
+      summary: Genera usuarios de prueba (mocking).
+      description: Crea 50 usuarios falsos con datos generados aleatoriamente mediante Faker y los devuelve en formato JSON.
+      tags:
+        - Mocking
+      responses:
+        "200":
+          description: Lista de usuarios generados exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        first_name:
+                          type: string
+                          example: Juan
+                        last_name:
+                          type: string
+                          example: Pérez
+                        email:
+                          type: string
+                          example: juanperez@example.com
+                        role:
+                          type: string
+                          enum: [user, admin]
+                        pets:
+                          type: array
+                          items:
+                            type: string
+        "500":
+          description: Error al generar los usuarios.
+
+  /api/mocks/generateData:
+    post:
+      summary: Genera e inserta datos falsos en la base de datos.
+      description: Inserta usuarios y mascotas falsos en la base de datos utilizando los modelos Mongoose configurados.
+      tags:
+        - Mocking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                users:
+                  type: integer
+                  description: Cantidad de usuarios a generar.
+                  example: 10
+                pets:
+                  type: integer
+                  description: Cantidad de mascotas a generar.
+                  example: 20
+      responses:
+        "200":
+          description: Datos generados e insertados correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Se generaron 10 usuarios y 20 mascotas.
+        "500":
+          description: Error al generar o insertar los datos.

@@ -1,0 +1,25 @@
+paths:
+  /api/sms:
+    get:
+      summary: Envía un mensaje SMS.
+      description: Envía un mensaje de texto utilizando el servicio de mensajería configurado (por ejemplo, Twilio).
+      tags:
+        - SMS
+      responses:
+        "200":
+          description: SMS enviado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Mensaje enviado correctamente al destinatario.
+        "400":
+          description: Solicitud inválida o falta información requerida.
+        "500":
+          description: Error interno al intentar enviar el mensaje SMS.

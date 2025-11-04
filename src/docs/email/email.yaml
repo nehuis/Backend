@@ -1,0 +1,50 @@
+paths:
+  /api/email:
+    get:
+      summary: Envía un correo electrónico simple.
+      description: Envía un correo electrónico básico utilizando el servicio configurado en el backend.
+      tags:
+        - Email
+      responses:
+        "200":
+          description: El correo fue enviado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Correo enviado exitosamente.
+        "400":
+          description: Solicitud inválida o parámetros incorrectos.
+        "500":
+          description: Error interno al enviar el correo.
+
+  /api/email/attachments:
+    get:
+      summary: Envía un correo con archivos adjuntos.
+      description: Envía un correo electrónico que incluye uno o más archivos adjuntos.
+      tags:
+        - Email
+      responses:
+        "200":
+          description: El correo con adjuntos fue enviado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Correo con adjuntos enviado exitosamente.
+        "400":
+          description: Solicitud inválida o falta información requerida.
+        "500":
+          description: Error interno al enviar el correo con adjuntos.

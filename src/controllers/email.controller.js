@@ -39,7 +39,7 @@ export const sendEmail = (req, res) => {
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
         console.log(err);
-        res.status(500).send({
+        res.status(401).send({
           error: err,
           message: "No se pudo enviar el email desde:" + process.env.GMAIL_USER,
         });

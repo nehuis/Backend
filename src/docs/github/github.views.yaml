@@ -1,0 +1,68 @@
+paths:
+  /api/github/login:
+    get:
+      summary: Renderiza la vista de login con GitHub.
+      description: Muestra el formulario para iniciar sesión utilizando la cuenta de GitHub.
+      tags:
+        - Github Views
+      responses:
+        "200":
+          description: Vista de login renderizada correctamente.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html>...</html>"
+        "500":
+          description: Error al renderizar la vista.
+
+  /api/github/register:
+    get:
+      summary: Renderiza la vista de registro con GitHub.
+      description: Muestra el formulario para crear una cuenta vinculada a GitHub.
+      tags:
+        - Github Views
+      responses:
+        "200":
+          description: Vista de registro renderizada correctamente.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html>...</html>"
+        "500":
+          description: Error al renderizar la vista.
+
+  /api/github/error:
+    get:
+      summary: Renderiza la vista de error de registro.
+      description: Muestra una página informando errores durante el proceso de registro.
+      tags:
+        - Github Views
+      responses:
+        "200":
+          description: Vista de error renderizada correctamente.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body><h1>Error en el registro</h1></body></html>"
+        "500":
+          description: Error interno al renderizar la vista.
+
+  /api/github/instructions:
+    get:
+      summary: Renderiza la vista con instrucciones.
+      description: Muestra una página con instrucciones o información útil para el usuario.
+      tags:
+        - Github Views
+      responses:
+        "200":
+          description: Vista de instrucciones renderizada correctamente.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body><h1>Instrucciones</h1></body></html>"
+        "500":
+          description: Error interno al renderizar la vista.

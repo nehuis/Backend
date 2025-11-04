@@ -9,6 +9,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
 import cookieParser from "cookie-parser";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUIExpress from "swagger-ui-express";
 
 import __dirname from "./utils.js";
 import initializePassport from "./config/passport.config.js";
@@ -50,6 +52,27 @@ app.use(
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 8080;
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "API de E-Commerce",
+      version: "1.0.0",
+      description: "Documentación de la API del proyecto Backend",
+    },
+    servers: [
+      {
+        url: "http://localhost:8080",
+        description: "Servidor local",
+      },
+    ],
+  },
+  apis: ["./src/docs/**/*.yaml"],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
 
 // Sesiones con Mongo
 app.use(
