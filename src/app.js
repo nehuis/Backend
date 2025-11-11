@@ -96,6 +96,11 @@ app.engine("handlebars", handlebars.engine({}));
 app.set("views", __dirname + "/views/");
 app.set("view engine", "handlebars");
 
+//Ruta principal
+app.get("/", (req, res) => {
+  res.send("Bienvenidos a mi API");
+});
+
 // API Endpoints
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
