@@ -98,7 +98,7 @@ app.set("view engine", "handlebars");
 
 //Ruta principal
 app.get("/", (req, res) => {
-  res.send("Bienvenidos a mi API");
+  res.render("principal");
 });
 
 // API Endpoints
@@ -153,3 +153,5 @@ const mongoInstance = async () => {
 mongoInstance();
 
 app.use(addLogger);
+
+export default app;

@@ -1,0 +1,43 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página Principal</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <!-- Botón de modo oscuro -->
+    <button class="theme-toggle" id="themeToggle"></button>
+
+    <!-- Contenedor principal -->
+    <div class="form-wrapper">
+      <div class="github-card">
+        <h1>Bienvenido a mi proyecto backend</h1>
+        <p>
+          Usá el formulario de registro para crear tu cuenta y empezar a
+          explorar.
+        </p>
+
+        <a href="views/users/register">
+          <button class="btn-primary">Ir al Registro</button>
+        </a>
+
+        <div class="extra-links">
+          <p>
+            ¿Ya tenés una cuenta?
+            <a href="views/users/login">Iniciá sesión aquí</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // === Toggle modo oscuro === const toggleBtn =
+      document.getElementById("themeToggle");
+      toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode"); toggleBtn.textContent =
+      document.body.classList.contains("dark-mode") ? "Modo Claro" : "Modo
+      Oscuro"; });
+    </script>
+  </body>
+</html>

@@ -1,39 +1,4 @@
 paths:
-  /api/mocks/mockingpets:
-    get:
-      summary: Genera mascotas de prueba (mocking).
-      description: Crea 100 objetos de mascotas falsas utilizando Faker y los devuelve en formato JSON.
-      tags:
-        - Mocking
-      responses:
-        "200":
-          description: Lista de mascotas generadas exitosamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  payload:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          example: Rex
-                        species:
-                          type: string
-                          example: dog
-                        birthDate:
-                          type: string
-                          format: date-time
-                          example: 2020-06-12T00:00:00.000Z
-        "500":
-          description: Error al generar las mascotas.
-
   /api/mocks/mockingusers:
     get:
       summary: Genera usuarios de prueba (mocking).

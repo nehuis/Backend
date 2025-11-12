@@ -20,11 +20,6 @@ const userSchema = new mongoose.Schema({
     default: "user",
     enum: ["user", "admin"],
   },
-  pets: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "Pet",
-    default: [],
-  },
 });
 
 export const userModel = mongoose.model(userCollection, userSchema);
