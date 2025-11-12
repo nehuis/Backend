@@ -3,11 +3,13 @@
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
 ![Express](https://img.shields.io/badge/Express.js-black)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen)
+![Docker](https://img.shields.io/badge/Docker-Container-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 Este proyecto es un backend completo para una tienda e-commerce desarrollado con **Node.js**, **Express** y **MongoDB**.  
 Permite gestionar productos, carritos y usuarios, además de contar con vistas dinámicas creadas con **Handlebars**.  
-El sistema incluye autenticación mediante **email y contraseña** o **cuenta de GitHub**, envío automático de tickets de compra por correo electrónico y la posibilidad de enviar SMS con **Twilio**.
+El sistema incluye autenticación mediante **email y contraseña** o **cuenta de GitHub**, envío automático de tickets de compra por correo electrónico y la posibilidad de enviar SMS con **Twilio**.  
+Además, el proyecto está **documentado con Swagger** y **containerizado con Docker** para facilitar su despliegue y uso.
 
 ---
 
@@ -25,6 +27,8 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 - API RESTful compatible con **Postman**.
 - Conexión a **MongoDB** mediante **Mongoose**.
 - Paginación, filtrado y ordenamiento de productos.
+- **Documentación interactiva con Swagger**.
+- **Docker** para despliegue fácil y aislado.
 
 ---
 
@@ -41,10 +45,14 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 - Bcrypt (encriptación de contraseñas)
 - Toastify (notificaciones en vistas)
 - Postman (para pruebas de endpoints)
+- **Swagger (OpenAPI 3.0)**
+- **Docker**
 
 ---
 
 ## Instalación
+
+### Opción 1: Ejecución local
 
 1. Clonar el repositorio:
 
@@ -63,10 +71,9 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 
    ```bash
    PORT=8080
-   MONGO_URI=mongodb+srv://...
+   MONGO_URL=mongodb+srv://...
    GITHUB_CLIENT_ID=...
    GITHUB_CLIENT_SECRET=...
-   GITHUB_CALLBACK_URL=http://localhost:8080/api/sessions/githubcallback
    GMAIL_USER=tu_correo@gmail.com
    GMAIL_PASS=tu_contraseña_o_token
    TWILIO_SID=...
@@ -81,6 +88,31 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
    # o en modo desarrollo:
    npm run dev
    ```
+
+### Opción 2: Ejecución con Docker
+
+Podés correr el proyecto directamente desde la imagen publicada en Docker Hub:
+
+```bash
+   docker pull nehuis/backend-cluster-docker:1.0.0
+```
+
+Ejecutar el contenedor:
+
+```bash
+   docker run -d \
+   p 8080:8080 \
+   --name backend-ecommerce \
+   -e MONGO_URL=mongodb://host.docker.internal:27017/backend \
+   -e PORT=8080 \
+   nehuis/backend-cluster-docker:1.0.0
+```
+
+Imagen en Docker Hub:
+
+<https://hub.docker.com/r/nehuis/backend-cluster-docker>
+
+---
 
 ## Endpoints principales de la API
 
@@ -105,6 +137,28 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 | DELETE | `/api/carts/:cid/products/:pid` | Eliminar producto del carrito |
 | DELETE | `/api/carts/:cid`               | Vaciar carrito                |
 
+---
+
+## Documentación Swagger
+
+El proyecto cuenta con documentación interactiva generada con Swagger UI, accesible desde el navegador.
+
+- Ruta de acceso:
+  <http://localhost:8080/api/docs>
+- Formato OpenAPI 3.0
+- Permite:
+  - Probar endpoints directamente desde el navegador.
+  - Ver los parámetros esperados, esquemas y respuestas.
+  - Autenticarse con JWT si la ruta lo requiere.
+
+Las especificaciones Swagger se encuentran en la carpeta:
+
+```bash
+    /src/docs/
+```
+
+---
+
 ## Vistas con Handlebars
 
 - `/` → Página principal con listado de productos (paginación y filtros)
@@ -113,6 +167,8 @@ El sistema incluye autenticación mediante **email y contraseña** o **cuenta de
 - `/views/users/register` → Registro de usuario
 - `/views/users/login` → Inicio de sesión
 - `/profile` → Perfil del usuario logueado
+
+---
 
 ## Envío de tickets y SMS
 
