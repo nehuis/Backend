@@ -2,7 +2,6 @@ import { Router } from "express";
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
 import { userModel } from "../models/user.model.js";
-import { petModel } from "../models/pet.model.js";
 
 const router = Router();
 
@@ -16,29 +15,6 @@ const generateUser = () => {
     pets: [],
   };
 };
-
-const generatePet = () => {
-  return {
-    name: faker.animal.dog(),
-    species: faker.animal.type(),
-    birthDate: faker.date.past(),
-  };
-};
-
-router.get("/mockingpets", async (req, res) => {
-  try {
-    const pets = [];
-    for (let i = 0; i < 100; i++) {
-      pets.push(generatePet());
-    }
-    res.json({ status: "success", payload: pets });
-  } catch (error) {
-    console.error("Error en /mockingpets:", error);
-    res
-      .status(500)
-      .json({ status: "error", message: "Error generando mascotas" });
-  }
-});
 
 router.get("/mockingusers", async (req, res) => {
   try {
