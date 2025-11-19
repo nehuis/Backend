@@ -154,11 +154,6 @@ components:
           type: string
           enum: [user, admin]
           example: user
-        pets:
-          type: array
-          items:
-            type: string
-            example: 6710da62d8b2ff29bbbc4123
 
     UserInput:
       type: object

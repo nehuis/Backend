@@ -39,10 +39,8 @@ router.post("/generateData", async (req, res) => {
     const petDocs = [];
 
     for (let i = 0; i < users; i++) userDocs.push(generateUser());
-    for (let i = 0; i < pets; i++) petDocs.push(generatePet());
 
     const insertedUsers = await userModel.insertMany(userDocs);
-    const insertedPets = await petModel.insertMany(petDocs);
 
     res.json({
       status: "success",

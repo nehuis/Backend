@@ -33,23 +33,6 @@ paths:
         "500":
           description: Error al renderizar la vista.
 
-  /api/github/error:
-    get:
-      summary: Renderiza la vista de error de registro.
-      description: Muestra una página informando errores durante el proceso de registro.
-      tags:
-        - Github Views
-      responses:
-        "200":
-          description: Vista de error renderizada correctamente.
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body><h1>Error en el registro</h1></body></html>"
-        "500":
-          description: Error interno al renderizar la vista.
-
   /api/github/instructions:
     get:
       summary: Renderiza la vista con instrucciones.

@@ -72,7 +72,15 @@ const swaggerOptions = {
 };
 
 const specs = swaggerJSDoc(swaggerOptions);
-app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
+app.use(
+  "/apidocs",
+  swaggerUIExpress.serve,
+  swaggerUIExpress.setup(specs, {
+    swaggerOptions: {
+      supportedSubmitMethods: [],
+    },
+  })
+);
 
 // Sesiones con Mongo
 app.use(
