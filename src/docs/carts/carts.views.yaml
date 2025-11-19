@@ -1,5 +1,5 @@
 paths:
-  /views/carts/:
+  /views/carts:
     get:
       summary: Obtiene la vista del carrito asignado al usuario
       tags:

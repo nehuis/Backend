@@ -312,3 +312,15 @@ http: 11/11/2025 07:14:19 - GET en /css/styles.css
 info: Logger Mode: dev
 info: Server running on port: 8080
 http: 11/11/2025 07:14:43 - GET en /css/styles.css
+info: Logger Mode: dev
+info: Server running on port: 8080
+info: Logger Mode: dev
+info: Server running on port: 8080
+http: 17/11/2025 04:46:47 - GET en /views/carts/
+info: Logger Mode: dev
+info: Server running on port: 8080
+http: 17/11/2025 04:48:52 - GET en /views/carts
+info: Logger Mode: dev
+info: Server running on port: 8080
+info: Logger Mode: dev
+info: Server running on port: 8080
